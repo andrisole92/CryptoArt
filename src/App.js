@@ -17,6 +17,7 @@ import Web3 from 'web3';
 class App extends React.Component {
 
     componentDidMount() {
+        console.log('componentDidMount3')
         if (typeof window.web3 !== 'undefined') {
             this.web3Provider = window.web3.currentProvider;
             window.web3 = new Web3(window.web3.currentProvider);
@@ -32,9 +33,10 @@ class App extends React.Component {
         const SaleAuction = Contract(SaleClockAuctionContract);
         CryptoArt.setProvider(window.web3.currentProvider);
         SaleAuction.setProvider(window.web3.currentProvider);
-
+        window.CryptoArt = CryptoArt;
+        window.SaleAuction = CryptoArt;
         // console.log(CryptoArtContract.deployed());
-        // console.log(CryptoArt.deployed());
+        console.log(CryptoArt.deployed());
 
         SaleAuction.deployed().then(i => {
             window.sale = i
