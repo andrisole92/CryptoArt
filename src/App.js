@@ -95,6 +95,7 @@ class App extends React.Component {
             <Router>
                 <div>
                     <Header></Header>
+                    <div id="loh"></div>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/sign-in" component={SignIn}/>
                     <Route exact path="/my-cabinet" component={MyCabinet}/>
