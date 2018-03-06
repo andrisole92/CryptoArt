@@ -5,95 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3193ee35-5127-4f73-a24e-90dec98b96b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/favicon.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/untitled1.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contracts/KryptoArt.sol" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contracts/Migrations.sol" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contracts/SafeMath.sol" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/migrations/1_initial_migration.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/migrations/2_deploy_contracts.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/manifest.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/App.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/App.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/App.test.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Alert/Alert.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Alert/Alert.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Alert/Alert.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Alert/Alert.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Alert/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/All/All.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/All/All.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/All/All.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/All/All.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/All/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Auction/Auction.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Auction/Auction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Auction/Auction.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Auction/Auction.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Auction/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Footer/Footer.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Footer/Footer.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Footer/Footer.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Footer/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Header/Header.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Header/Header.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Header/Header.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Components/Header/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Admin/Admin.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Admin/Admin.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Admin/Admin.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Admin/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Home/Home.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Home/Home.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Home/Home.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/Home/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/MyCabinet/MyCabinet.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/MyCabinet/MyCabinet.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/MyCabinet/MyCabinet.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/MyCabinet/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/SignIn/SignIn.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/SignIn/SignIn.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/SignIn/SignIn.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Pages/SignIn/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/ClockAuction.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/ClockAuctionBase.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/ERC721.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/ERC721Metadata.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/GeneScienceInterface.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/KittyAccessControl.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/KittyAuction.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/KittyBase.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/KittyCore.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/KittyMinting.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/KittyOwnership.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/Migrations.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/Ownable.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/Pausable.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/SafeMath.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/Sale.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/contracts/SaleClockAuction.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/index.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/logo.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/art.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/auction.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/contract.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/counter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/modules/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/registerServiceWorker.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/store.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/MetaCoin.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/truffle-config.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/truffle.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/yarn.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -107,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="30" column="10" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="10" />
+            <state relative-caret-position="30">
+              <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -139,7 +52,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -257,7 +170,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/Pages/Home/Home.scss" />
         <option value="$PROJECT_DIR$/src/Components/Footer/Footer.jsx" />
         <option value="$PROJECT_DIR$/src/Components/Header/Header.jsx" />
@@ -282,6 +194,7 @@
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/contracts/KryptoArt.sol" />
         <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -402,15 +315,31 @@
       <workItem from="1520172943561" duration="6965000" />
       <workItem from="1520191023115" duration="1681000" />
       <workItem from="1520257117092" duration="7623000" />
-      <workItem from="1520368694832" duration="185000" />
+      <workItem from="1520368694832" duration="353000" />
     </task>
+    <task id="LOCAL-00001" summary="First Commit">
+      <created>1520368891373</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1520368891373</updated>
+    </task>
+    <task id="LOCAL-00002" summary="New build">
+      <created>1520368980059</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1520368980059</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27073000" />
+    <option name="totallyTimeSpent" value="27241000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="60" y="25" width="1621" height="975" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -419,7 +348,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24952501" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -439,6 +368,12 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="First Commit" />
+    <MESSAGE value="New build" />
+    <option name="LAST_COMMIT_MESSAGE" value="New build" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -686,6 +621,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -693,6 +629,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="2" lean-forward="false" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -791,14 +728,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="30" column="10" lean-forward="false" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -811,6 +740,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
           <folding />
         </state>
       </provider>
