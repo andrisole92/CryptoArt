@@ -7,7 +7,6 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 
 app.get('/*', function (req, res) {
-    shell.echo('good');
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
