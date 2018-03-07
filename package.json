@@ -1,6 +1,6 @@
 {
   "name": "untitled1",
-  "homepage": "https://andrisole92.github.io/CryptoArt",
+  "homepage": "",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,6 +21,7 @@
     "reactstrap": "^5.0.0-beta.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "shelljs": "^0.8.1",
     "truffle-contract": "^3.0.4",
     "truffle-hdwallet-provider": "0.0.3",
     "web3": "^1.0.0-beta.30"
