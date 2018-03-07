@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3193ee35-5127-4f73-a24e-90dec98b96b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hello.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pull.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -37,11 +33,9 @@
       <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-              <folding>
-                <marker date="1520377471537" expanded="true" signature="102:747" ph="{&quot;bem-cn&quot;: &quot;^2.1.3&quot;...}" />
-              </folding>
+            <state relative-caret-position="136">
+              <caret line="12" column="21" lean-forward="false" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,8 +53,8 @@
       <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="30">
+              <caret line="2" column="22" lean-forward="false" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -166,6 +160,7 @@
       <find>checkConr</find>
       <find>Build</find>
       <find>home</find>
+      <find>express</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -322,7 +317,7 @@
       <workItem from="1520257117092" duration="7623000" />
       <workItem from="1520368694832" duration="7216000" />
       <workItem from="1520376910462" duration="293000" />
-      <workItem from="1520377221590" duration="786000" />
+      <workItem from="1520377221590" duration="1020000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1520368891373</created>
@@ -380,11 +375,18 @@
       <option name="project" value="LOCAL" />
       <updated>1520376434874</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Server">
+      <created>1520433369985</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1520433369985</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35183000" />
+    <option name="totallyTimeSpent" value="35417000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="59" y="25" width="1621" height="975" extended-state="0" />
@@ -423,7 +425,8 @@
     <MESSAGE value="First Commit" />
     <MESSAGE value="New build" />
     <MESSAGE value="new build" />
-    <option name="LAST_COMMIT_MESSAGE" value="new build" />
+    <MESSAGE value="Server" />
+    <option name="LAST_COMMIT_MESSAGE" value="Server" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -443,9 +446,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1520377471537" expanded="true" signature="102:747" ph="{&quot;bem-cn&quot;: &quot;^2.1.3&quot;...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -478,9 +479,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1520377471537" expanded="true" signature="102:747" ph="{&quot;bem-cn&quot;: &quot;^2.1.3&quot;...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -737,16 +736,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build/server.js" />
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-          <folding>
-            <marker date="1520377471537" expanded="true" signature="102:747" ph="{&quot;bem-cn&quot;: &quot;^2.1.3&quot;...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -771,10 +760,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="12" column="21" lean-forward="false" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state relative-caret-position="30">
+          <caret line="2" column="22" lean-forward="false" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
           <folding />
         </state>
       </provider>
