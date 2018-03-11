@@ -1,7 +1,11 @@
 const a = [
     {
         name: "",
-        artist: "",
+        description: "",
+        img: ""
+    },
+    {
+        name: "",
         description: "",
         img: ""
     },

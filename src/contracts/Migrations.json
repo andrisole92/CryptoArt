@@ -819,14 +819,9 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0xc7a1ccc00040af58837d6f699db28af6bf5706b8"
-    },
-    "5777": {
-      "events": {},
-      "links": {},
-      "address": "0xdda6327139485221633a1fcd65f4ac932e60a2e1"
+      "address": "0xea2a1bc3b00422ab4265aebc07924497c0f3e58d"
     }
   },
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-11T19:41:23.679Z"
+  "updatedAt": "2018-03-11T20:19:05.881Z"
 }
