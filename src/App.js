@@ -1,5 +1,5 @@
 import React from "react";
-import {Route} from "react-router-dom";
+import {Route,withRouter} from "react-router-dom";
 
 import Home from './Pages/Home'
 import SignIn from "./Pages/SignIn";
@@ -108,7 +108,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setTokenArray
 }, dispatch);
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(App)
+)(App))

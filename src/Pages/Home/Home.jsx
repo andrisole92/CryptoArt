@@ -48,9 +48,9 @@ class Home extends Component {
         let auctionCards = this.props.auction.byPage.map((a) => <SaleCard key={a.tokenId} name={a.name}
                                                                          price={a.currentPrice}
                                                                          tokenId={a.tokenId}
-                                                                         img="./img/lisa.jpg" artist="Leo"/>);
+                                                                         img="./img/lisa.jpg" artist={a.author}/>);
         let cards = this.props.art.allArt.map((a) => <CardArt key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId} name={a.name} owner={a.owner} img="./img/lisa.jpg"
-                                                              artist="Leo"/>);
+                                                              artist={a.author}/>);
 
         return (
             <div className="home">
