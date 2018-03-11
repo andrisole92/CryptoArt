@@ -49,6 +49,7 @@ class App extends React.Component {
 
         window.ccc = CryptoArt;
         CryptoArt.deployed().then((i) => {
+            window.core = i;
             this.props.setCore(new window.web3.eth.Contract(CryptoArt.abi, i.address));
             this.setState({coreLoaded:true});
             i.totalSupply.call().then((r)=>{
@@ -56,6 +57,7 @@ class App extends React.Component {
                 this.props.setTotal(r.c[0]);
             });
             SaleAuction.deployed().then((s) => {
+                window.sale = s;
                 this.props.setSale(new window.web3.eth.Contract(SaleAuction.abi, s.address));
                 this.setState({saleLoaded:true});
                 i.balanceOf(s.address).then((r2)=>{
@@ -82,7 +84,7 @@ class App extends React.Component {
         return (
             <div>
                 <Header></Header>
-                <Loader loaded={this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== 0 && this.props.auction.tokens !== null}>
+                <Loader loaded={this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== null && this.props.auction.tokens !== null}>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/sign-in" component={SignIn}/>
                     <Route exact path="/my-cabinet" component={MyCabinet}/>

@@ -5,7 +5,7 @@ export const REMOVE_ART = 'art/REMOVE';
 export const SET_TOTAL = 'art/SET_TOTAL';
 
 const initialState = {
-    total: 0,
+    total: null,
     tokens: null,
     allArt: []
 }

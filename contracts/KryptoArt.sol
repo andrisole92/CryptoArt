@@ -333,8 +333,9 @@ contract KittyBase is KittyAccessControl, SafeMath {
     function _createKitty(
         string _name,
         string _author,
-        address _owner,
-        uint _initialPrice
+        uint _initialPrice,
+        address _owner
+
     )
     internal
     returns (uint)
@@ -685,6 +686,8 @@ contract KittyOwnership is KittyBase, ERC721 {
 /// @notice We omit a fallback function to prevent accidental sends to this contract.
 contract ClockAuctionBase is SafeMath {
 
+    KittyAuction public kittyAuction;
+
     // Represents an auction on an NFT
     struct Auction {
         // Current owner of NFT
@@ -817,7 +820,7 @@ contract ClockAuctionBase is SafeMath {
         // is anything worth worrying about, transfer it back to bidder.
         // NOTE: We checked above that the bid amount is greater than or
         // equal to the price so this cannot underflow.
-        uint256 bidExcess = _bidAmount - doublePrice;
+        uint256 bidExcess = _bidAmount - price;
 
         // Return the funds. Similar to the previous transfer, this is
         // not susceptible to a re-entry attack because the auction is
@@ -1138,7 +1141,6 @@ contract SaleClockAuction is ClockAuction {
     // @dev Sanity check that allows us to ensure that we are pointing to the
     //  right auction in our setSaleAuctionAddress() call.
     bool public isSaleClockAuction = true;
-    KittyAuction public kittyAuction;
 
     // Tracks last 5 sale price of gen0 kitty sales
     uint256 public gen0SaleCount;
@@ -1283,12 +1285,11 @@ contract KittyMinting is KittyAuction {
     uint256 public gen0CreatedCount = 0;
     /// @dev Creates a new gen0 kitty with the given genes and
     ///  creates an auction for it.
-    function createGen0Auction(string _name, string _author, uint256 _initialPrice) external onlyCOO {
+    function createGen0Auction(string _name, string _author, uint256 _initialPrice) external onlyCLevel {
         require(gen0CreatedCount < GEN0_CREATION_LIMIT);
         //
         uint256 kittyId = _createKitty(_name, _author, _initialPrice, address(this));
         _approve(kittyId, saleAuction);
-        //        //
         saleAuction.createAuction(
             kittyId,
             _initialPrice,

@@ -10,9 +10,9 @@ class Admin extends React.Component {
         super(props);
 
         this.state = {
-            name: "Mohnatik",
-            author: "Abcde",
-            price: "1",
+            name: "",
+            author: "",
+            price: "",
             paused: null,
             coreBalance: 0,
             saleBalance: 0,
