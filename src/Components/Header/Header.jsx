@@ -1,7 +1,13 @@
 import React    from "react";
 
+import { push } from 'react-router-redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { withRouter } from 'react-router-dom'
+
+
 import './Header.css';
-import {Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from "reactstrap";
+import {Menu} from "semantic-ui-react";
 
 class Header extends React.Component {
     constructor(props){
@@ -14,23 +20,24 @@ class Header extends React.Component {
     render() {
         return (
             <div>
-                <Navbar color="faded" light>
-                    <NavbarBrand href="/" className="mr-auto">reactstrap</NavbarBrand>
-                    <NavbarToggler onClick={() => this.setState({collapsed: !this.state.collapsed})} className="mr-2" />
-                    <Collapse isOpen={!this.state.collapsed} navbar>
-                        <Nav navbar>
-                            <NavItem>
-                                <NavLink href="/my-cabinet">My Cabinet</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="/sign-in">Create Account</NavLink>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
+                <Menu>
+                    <Menu.Item header onClick={this.props.home}>KryptoArt</Menu.Item>
+                    <Menu.Item name='myCabinet' onClick={this.props.myCabinet}/>
+                    <Menu.Item name='SignIn' onClick={this.props.signIn}/>
+                </Menu>
             </div>
         );
     }
 }
 
-export default Header;
+const mapDispatchToProps = dispatch => bindActionCreators({
+    home: () => push('/'),
+    myCabinet: () => push('/my-cabinet'),
+    signIn: () => push('/sign-in'),
+}, dispatch);
+
+export default withRouter(connect(
+    null,
+    mapDispatchToProps
+)(Header))
+

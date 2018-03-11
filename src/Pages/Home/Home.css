@@ -1,0 +1,10 @@
+.testImage {
+  max-height: 200px;
+  display: block;
+  margin: auto; }
+
+.imgContainer {
+  max-height: 200px; }
+
+.home {
+  margin-top: 24px; }

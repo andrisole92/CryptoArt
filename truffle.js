@@ -7,6 +7,7 @@ const infura_apikey = "HmpCbfdDTeq63ZGuDd6k";
 const mnemonic = "link acid donor calm sense genius grow valve add tomato inform tongue";
 
 module.exports = {
+    contracts_build_directory: "./output",
     networks: {
         development: {
             host: '127.0.0.1',

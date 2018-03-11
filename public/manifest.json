@@ -1,6 +1,8 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "KryptoArt",
+  "name": "Crypto Art Dealer",
+  "version": "0.0.0.1",
+  "manifest_version": 2,
   "icons": [
     {
       "src": "favicon.ico",

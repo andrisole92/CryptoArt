@@ -25,20 +25,22 @@ export default (state = initialState, action) => {
     }
 }
 
-export const setCore = () => {
+export const setCore = (core) => {
     return dispatch => {
         dispatch({
-            type: SET_CORE
+            type: SET_CORE,
+            contract: core
         })
 
     }
 }
 
 
-export const setSale = () => {
+export const setSale = (sale) => {
     return dispatch => {
         dispatch({
-            type: SET_SALE
+            type: SET_SALE,
+            contract: sale
         })
     }
 }

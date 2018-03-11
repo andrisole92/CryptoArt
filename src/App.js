@@ -1,20 +1,35 @@
 import React from "react";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 
 import Home from './Pages/Home'
 import SignIn from "./Pages/SignIn";
-import MyCabinet from "./Pages/MyCabinet";
-import Header from "./Components/Header";
+import MyCabinet from "./Pages/MyCabinet/MyCabinet";
+import Header from "./Components/Header/Header";
 import Admin from "./Pages/Admin";
 import Contract from 'truffle-contract'
 import SaleClockAuctionContract from './contracts/SaleClockAuction.json'
 import CryptoArtContract from './contracts/KittyCore.json'
-
-import store from './store'
-
 import Web3 from 'web3';
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
+
+import {setSale, setCore} from './modules/contract'
+import {setAuctionTotal, setTokenArray} from './modules/auction'
+import {setTotal} from './modules/art'
+import Loader from "./Components/Loader/Loader";
 
 class App extends React.Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            saleLoaded: false,
+            coreLoaded: false,
+            error: false
+        }
+    }
 
     componentDidMount() {
         console.log('componentDidMount3')
@@ -26,86 +41,73 @@ class App extends React.Component {
             this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
             window.web3 = new Web3(this.web3Provider);
         }
-        // this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
-        // window.web3 = new Web3(this.web3Provider);
         window.web3.eth.getAccounts().then((accs) => window.web3.eth.defaultAccount = accs[0]);
         const CryptoArt = Contract(CryptoArtContract);
         const SaleAuction = Contract(SaleClockAuctionContract);
         CryptoArt.setProvider(window.web3.currentProvider);
         SaleAuction.setProvider(window.web3.currentProvider);
-        window.CryptoArt = CryptoArt;
-        window.SaleAuction = CryptoArt;
-        // console.log(CryptoArtContract.deployed());
-        console.log(CryptoArt.deployed());
 
-        SaleAuction.deployed().then(i => {
-            window.sale = i
-            window.test = new window.web3.eth.Contract(window.sale.abi);
-
-        });
-        CryptoArt.deployed().then(i => {
-            window.core = i
-
-        });
-        store.dispatch({type: 'contract/SET_CORE', contract: CryptoArt});
-        store.dispatch({type: 'contract/SET_SALE', contract: SaleAuction});
-
-        window.ccc =CryptoArt;
-
-        CryptoArt.deployed().then(meta => {
-
-            const allEvents = meta.allEvents({
-                fromBlock: 0,
-                toBlock: 'latest'
+        window.ccc = CryptoArt;
+        CryptoArt.deployed().then((i) => {
+            this.props.setCore(new window.web3.eth.Contract(CryptoArt.abi, i.address));
+            this.setState({coreLoaded:true});
+            i.totalSupply.call().then((r)=>{
+                console.log(r);
+                this.props.setTotal(r.c[0]);
             });
-            allEvents.watch((err, res) => {
-                if (err) console.error(err);
-                if (res) {
-                    console.log(res);
-                    if (res.event === "Birth") {
-                        console.log("Birth");
-                        store.dispatch({type: 'art/ADD', newArt: {name: res.args.name, id: res.args.kittyId.c[0]}})
-                    }
-                }
+            SaleAuction.deployed().then((s) => {
+                this.props.setSale(new window.web3.eth.Contract(SaleAuction.abi, s.address));
+                this.setState({saleLoaded:true});
+                i.balanceOf(s.address).then((r2)=>{
+                    this.props.setAuctionTotal(r2.c[0]);
+                });
+                i.tokensOfOwner(s.address).then((r)=>{
+                    let arr = [];
+                    arr = r.map((t) => t.c[0]);
+                    this.props.setTokenArray(arr);
+                })
+
+                this.bothContractsReady()
             });
         });
-        SaleAuction.deployed().then(meta => {
 
-            const allEvents = meta.allEvents({
-                fromBlock: 0,
-                toBlock: 'latest'
-            });
-            allEvents.watch((err, res) => {
-                if (err) console.error(err);
-                if (res) {
-                    console.log(res);
-                    if (res.event === "AuctionCreated") {
-                        console.log("AuctionCreated");
-                        store.dispatch({type: 'auction/CREATE', auction: res.args})
-                    }
-                }
-            });
-        });
+    }
+
+    bothContractsReady(){
+
     }
 
 
     render() {
         return (
-
-            <Router>
-                <div>
-                    <Header></Header>
-                    <div id="loh"></div>
+            <div>
+                <Header></Header>
+                <Loader loaded={this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== 0 && this.props.auction.tokens !== null}>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/sign-in" component={SignIn}/>
                     <Route exact path="/my-cabinet" component={MyCabinet}/>
                     <Route exact path="/admin" component={Admin}/>
-                </div>
-            </Router>
+                </Loader>
 
+            </div>
         );
     }
 }
 
+const mapStateToProps = state => ({
+    contract: state.contract,
+    art: state.art,
+    auction: state.auction
+});
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setSale,
+    setCore,
+    setTotal,
+    setAuctionTotal,
+    setTokenArray
+}, dispatch);
 
-export default App;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)

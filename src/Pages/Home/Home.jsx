@@ -1,141 +1,86 @@
 import React, {Component} from 'react';
-import {
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button, Container, Row, Col, Jumbotron, TabContent, TabPane, Nav, NavItem, NavLink
-} from 'reactstrap';
-import classnames from 'classnames';
-import { push } from 'react-router-redux'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+
+import {Card} from 'semantic-ui-react';
+import {connect} from 'react-redux'
 import './Home.css';
+import CardArt from "../../Components/CardArt";
+import {addArt} from "../../modules/art";
+import {bindActionCreators} from "redux";
+import {addAuction} from "../../modules/auction";
+
+import utils from 'web3-utils'
+import SaleCard from "../../Components/SaleCard/SaleCard";
 
 class Home extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             activeTab: '1'
         }
     }
 
-    toggle(tab){
-        this.setState({
-            activeTab: tab
-        })
+    componentDidMount() {
+        console.log(this.props.art);
+        for (let j = 0; j < this.props.auction.tokens.length; j++) {
+
+        }
+        console.log(this.props.auction.tokens);
+        for (let i = 1; i < this.props.art.total; i++) {
+            this.props.contract.core.methods.getKitty(i).call({from: window.web3.eth.defaultAccount}).then((r) => {
+                r.tokenId = i;
+                if (this.props.auction.tokens.indexOf(i) === -1) {
+                    return this.props.contract.core.methods.ownerOf(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
+                        r.owner = p;
+                        this.props.addArt(r);
+                    });
+
+                } else {
+                    return this.props.contract.sale.methods.getCurrentPrice(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
+                        r.currentPrice = p;
+                        this.props.addAuction(r)
+                    });
+                }
+            })
+        }
     }
 
 
-
     render() {
+        let auctionCards = this.props.auction.byPage.map((a) => <SaleCard key={a.tokenId} name={a.name}
+                                                                         price={a.currentPrice}
+                                                                         tokenId={a.tokenId}
+                                                                         img="./img/lisa.jpg" artist="Leo"/>);
+        let cards = this.props.art.allArt.map((a) => <CardArt key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId} name={a.name} owner={a.owner} img="./img/lisa.jpg"
+                                                              artist="Leo"/>);
+
         return (
-            <div className="App">
-                <Jumbotron>
-                    <h1 className="display-3">Hi People!</h1>
-                    <p className="lead">This is a decentralized Art Dealer!</p>
-                    <p>Get a uniquer piece of art as a token, and store in the blockchain.</p>
-                    <p>You can put it on sale at any point of time.</p>
-                    <p>Your art can be bought by anyone for x2 Price!</p>
-                    <p className="lead">
-                        <Button color="primary">Learn More</Button>
-                    </p>
-                </Jumbotron>
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '1' })}
-                            onClick={() => { this.toggle('1'); }}
-                        >
-                            All Art
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '2' })}
-                            onClick={() => { this.toggle('2'); }}
-                        >
-                            Auction
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-                <TabContent activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                        <Container>
-                            <Row>
-                                <Col md="4">
-                                    <Card>
-                                        <CardImg top width="100%"
-                                                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-                                                 alt="Card image cap"/>
-                                        <CardBody>
-                                            <CardTitle>Mona Lise</CardTitle>
-                                            <CardSubtitle>Leonardo</CardSubtitle>
-                                            <p>Last bought for: 1 Eth</p>
-                                            <p>Current Price: 2 Eth</p>
-                                            <Button>Buy For 2 Eth</Button>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
-                                <Col md="4">
-                                    <Card>
-                                        <CardImg top width="100%"
-                                                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-                                                 alt="Card image cap"/>
-                                        <CardBody>
-                                            <CardTitle>Mona Lise</CardTitle>
-                                            <CardSubtitle>Leonardo</CardSubtitle>
-                                            <CardText>Last bought for: 1 Eth</CardText>
-                                            <CardText>Current Price: 2 Eth</CardText>
-                                            <Button>Buy For 2 Eth</Button>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
-                                <Col md="4">
-                                    <Card>
-                                        <CardImg top width="100%"
-                                                 src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180"
-                                                 alt="Card image cap"/>
-                                        <CardBody>
-                                            <CardTitle>Mona Lise</CardTitle>
-                                            <CardSubtitle>Leonardo</CardSubtitle>
-                                            <p>Last bought for: 1 Eth</p>
-                                            <p>Current Price: 2 Eth</p>
-                                            <Button>Buy For 2 Eth</Button>
-                                        </CardBody>
-                                    </Card>
-                                </Col>
-                            </Row>
-
-                        </Container>
-
-                    </TabPane>
-                    <TabPane tabId="2">
-                        <Row>
-                            <Col sm="6">
-                                <Card body>
-                                    <CardTitle>Special Title Treatment</CardTitle>
-                                    <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                    <Button>Go somewhere</Button>
-                                </Card>
-                            </Col>
-                            <Col sm="6">
-                                <Card body>
-                                    <CardTitle>Special Title Treatment</CardTitle>
-                                    <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                    <Button>Go somewhere</Button>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                </TabContent>
+            <div className="home">
+                <p>Auction</p>
+                <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
+                    {auctionCards}
+                </Card.Group>
+                <p>All</p>
+                <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
+                    {cards}
+                </Card.Group>
             </div>
         );
     }
 }
 
+const mapStateToProps = state => ({
+    art: state.art,
+    auction: state.auction,
+    contract: state.contract
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: () => push('/about-us')
+    addArt,
+    addAuction
 }, dispatch);
 
+
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Home)

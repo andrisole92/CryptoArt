@@ -1,7 +1,8 @@
 import React from "react";
-import {Button, Col, Container, Form, FormGroup, Input, Label, Jumbotron, Row} from "reactstrap";
+import {Button, Form, Header, Grid} from "semantic-ui-react";
 
 import './Admin.css'
+import {connect} from "react-redux";
 
 class Admin extends React.Component {
 
@@ -20,7 +21,6 @@ class Admin extends React.Component {
     }
 
     componentDidMount() {
-        this.checkContractsReady();
 
     }
 
@@ -32,6 +32,7 @@ class Admin extends React.Component {
             let web3 = window.web3;
             this.getPaused();
             this.getTotalSupply();
+            this.getTotalSupply();
             web3.eth.getBalance(core.address).then((res) => this.setState({coreBalance: res}));
             web3.eth.getBalance(sale.address).then((res) => this.setState({saleBalance: res}));
         } else {
@@ -40,17 +41,18 @@ class Admin extends React.Component {
     }
 
     onSubmit() {
-        if (!window.core) {
-            alert("Can't find the contract");
-        } else {
-            this.createPainting();
-        }
+        this.createPainting();
     }
 
     createPainting() {
+        console.log('createPainting');
         let web3 = window.web3;
-        const core = window.core;
-        core.createGen0Auction(this.state.name, this.state.author, parseInt(web3.utils.toWei(this.state.price,"ether"),10), {from: web3.eth.defaultAccount}).then((res) => {
+        console.log(this.props);
+        this.props.contract.core.methods.createGen0Auction(this.state.name, this.state.author, parseInt(web3.utils.toWei(this.state.price, "ether"), 10)).send({
+            from: web3.eth.defaultAccount,
+            gas: 400000,
+            gasPrice: 5000000000
+        }).then((res) => {
             console.log(res);
         }).catch((error) => {
             console.log(error);
@@ -88,54 +90,56 @@ class Admin extends React.Component {
 
     render() {
         return (
-            <div className="adminPage">
-                <Jumbotron>
-                    <h1 className="display-3">Hi Rob</h1>
-                    <p>Use this page to add more art.</p>
-                    <p>Only your wallet address can do it.</p>
-                    <p>It costs gas to write something to Blockchain.</p>
-                    <p>Core Balance: {this.state.coreBalance}</p>
-                    <p>Sale Balance: {this.state.saleBalance}</p>
-                    <p>Total Supply: {this.state.totalSupply}</p>
-                    <Row>
-                        <Button onClick={() => this.onPause()}>{this.state.paused ? "Unpause" : "Pause"}</Button>
-                    </Row>
-                </Jumbotron>
-                <Container>
-                    <Form>
-                        <FormGroup row>
-                            <Label for="email" sm={2}>Name</Label>
-                            <Col sm={10}>
-                                <Input type="text" name="name" id="email" placeholder="Name" value={this.state.name}
-                                       onChange={(e) => this.setState({name: e.target.value})}/>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="fullName" sm={2}>Author</Label>
-                            <Col sm={10}>
-                                <Input type="text" name="author" id="author"
-                                       placeholder="Author" value={this.state.author}
-                                       onChange={(e) => this.setState({author: e.target.value})}/>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="price" sm={2}>Price</Label>
-                            <Col sm={10}>
-                                <Input type="text" name="price" id="price"
-                                       placeholder="In Ethereum" value={this.state.price}
-                                       onChange={(e) => this.setState({price: e.target.value})}/>
-                            </Col>
-                        </FormGroup>
-                    </Form>
-                    <FormGroup check row>
-                        <Col sm={{size: 10, offset: 2}}>
-                            <Button onClick={() => this.onSubmit()}>Create</Button>
-                        </Col>
-                    </FormGroup>
-                </Container>
+            <div className="admin ui container aligned">
+                <Header >
+                    <Header.Content>
+
+                        <p>Total on Sale: {this.props.sale.total}</p>
+                        <p>Total Supply: {this.props.art.total}</p>
+                        {/*<Grid.Row>*/}
+                            {/*<Button onClick={() => this.onPause()}>{this.state.paused ? "Unpause" : "Pause"}</Button>*/}
+                        {/*</Grid.Row>*/}
+                    </Header.Content>
+                </Header>
+                <Form>
+                    <Form.Field>
+                        <label>Name</label>
+                        <input type="text" name="name" id="email" placeholder="Name" value={this.state.name}
+                               onChange={(e) => this.setState({name: e.target.value})}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Artist</label>
+                        <input type="text" name="author" id="author"
+                               placeholder="Author" value={this.state.author}
+                               onChange={(e) => this.setState({author: e.target.value})}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Price (in Ether)</label>
+                        <input type="text" name="price" id="price"
+                               placeholder="In Ethereum" value={this.state.price}
+                               onChange={(e) => this.setState({price: e.target.value})}/>
+                    </Form.Field>
+                    <Button fluid primary onClick={() => this.onSubmit()}>Submit</Button>
+
+                </Form>
             </div>
         );
     }
 }
 
-export default Admin;
+const mapStateToProps = state => ({
+    contract: state.contract,
+    art: state.art,
+    sale: state.auction
+});
+// const mapDispatchToProps = dispatch => bindActionCreators({
+//     setSale,
+//     setCore,
+//     setTotal,
+//     setAuctionTotal
+// }, dispatch);
+
+export default connect(
+    mapStateToProps,
+    null
+)(Admin)

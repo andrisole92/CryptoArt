@@ -5,6 +5,8 @@ import {
 } from 'reactstrap';
 import './MyCabinet.css'
 import classnames from 'classnames';
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 class MyCabinet extends React.Component {
 
@@ -120,4 +122,7 @@ class MyCabinet extends React.Component {
     }
 }
 
-export default MyCabinet;
+export default withRouter(connect(
+    null,
+    null
+)(MyCabinet))

@@ -4,11 +4,13 @@ import counter from './counter'
 import art from './art'
 import auction from "./auction";
 import contract from "./contract";
+import account from "./account";
 
 export default combineReducers({
     routing: routerReducer,
     counter,
     art,
     auction,
-    contract
+    contract,
+    account
 })

@@ -86,26 +86,6 @@ contract ERC721 {
 
 
 
-
-
-/// @title SEKRETOOOO
-contract GeneScienceInterface {
-    /// @dev simply a boolean to indicate this is the contract we expect to be
-    function isGeneScience() public pure returns (bool);
-
-    /// @dev given genes of kitten 1 & 2, return a genetic combination - may have a random factor
-    /// @param genes1 genes of mom
-    /// @param genes2 genes of sire
-    /// @return the genes that are supposed to be passed down the child
-    function mixGenes(uint256 genes1, uint256 genes2, uint256 targetBlock) public returns (uint256);
-}
-
-
-
-
-
-
-
 /// @title A facet of KittyCore that manages special access privileges.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev See the KittyCore contract documentation to understand how the various contract facets are arranged.
@@ -317,10 +297,6 @@ contract KittyBase is KittyAccessControl, SafeMath {
     ///  at any time. A zero value means no approval is outstanding.
     mapping(uint256 => address) public kittyIndexToApproved;
 
-    /// @dev A mapping from KittyIDs to an address that has been approved to use
-    ///  this Kitty for siring via breedWith(). Each Kitty can only have one approved
-    ///  address for siring at any time. A zero value means no approval is outstanding.
-    mapping(uint256 => address) public sireAllowedToAddress;
 
     /// @dev The address of the ClockAuction contract that handles sales of Kitties. This
     ///  same contract handles both peer-to-peer sales as well as the gen0 sales which are
@@ -341,7 +317,6 @@ contract KittyBase is KittyAccessControl, SafeMath {
         if (_from != address(0)) {
             ownershipTokenCount[_from]--;
             // once the kitten is transferred also clear sire allowances
-            delete sireAllowedToAddress[_tokenId];
             // clear any previously approved ownership exchange
             delete kittyIndexToApproved[_tokenId];
         }
@@ -358,7 +333,8 @@ contract KittyBase is KittyAccessControl, SafeMath {
     function _createKitty(
         string _name,
         string _author,
-        address _owner
+        address _owner,
+        uint _initialPrice
     )
     internal
     returns (uint)
@@ -373,7 +349,7 @@ contract KittyBase is KittyAccessControl, SafeMath {
         Kitty memory _kitty = Kitty({
             name : _name,
             author : _author,
-            lastPrice : 0,
+            lastPrice : _initialPrice,
             birthTime : uint64(now)
             });
         uint256 newKittenId = kitties.push(_kitty) - 1;
@@ -806,8 +782,7 @@ contract ClockAuctionBase is SafeMath {
 
         // Check that the bid is greater than or equal to the current price
         uint256 price = _currentPrice(auction);
-        uint256 doublePrice = mul(price, 2);
-        require(_bidAmount >= doublePrice);
+        require(_bidAmount >= price);
 
 
         // Grab a reference to the seller before the auction struct
@@ -823,8 +798,8 @@ contract ClockAuctionBase is SafeMath {
             // Calculate the auctioneer's cut.
             // (NOTE: _computeCut() is guaranteed to return a
             // value <= price, so this subtraction can't go negative.)
-            uint256 auctioneerCut = _computeCut(doublePrice);
-            uint256 sellerProceeds = doublePrice - auctioneerCut;
+            uint256 auctioneerCut = _computeCut(price);
+            uint256 sellerProceeds = price - auctioneerCut;
 
             // NOTE: Doing a transfer() in the middle of a complex
             // method like this is generally discouraged because of
@@ -836,6 +811,7 @@ contract ClockAuctionBase is SafeMath {
             // accident, they can call cancelAuction(). )
             seller.transfer(sellerProceeds);
         }
+        kittyAuction.setKittyLastPrice(price, _tokenId);
 
         // Calculate any excess funds included with the bid. If the excess
         // is anything worth worrying about, transfer it back to bidder.
@@ -1205,7 +1181,7 @@ contract SaleClockAuction is ClockAuction {
             uint64(now)
         );
         _addAuction(_tokenId, auction);
-        kittyAuction.setKittyLastPrice(1000, _tokenId);
+        kittyAuction.setKittyLastPrice(_startingPrice / 2, _tokenId);
     }
 
     /// @dev Updates lastSalePrice if seller is the nft contract
@@ -1219,12 +1195,6 @@ contract SaleClockAuction is ClockAuction {
         uint256 price = _bid(_tokenId, msg.value);
         _transfer(msg.sender, _tokenId);
 
-        // If not a gen0 auction, exit
-        if (seller == address(nonFungibleContract)) {
-            // Track gen0 sale prices
-            lastGen0SalePrices[gen0SaleCount % 5] = price;
-            gen0SaleCount++;
-        }
     }
 
 }
@@ -1316,7 +1286,7 @@ contract KittyMinting is KittyAuction {
     function createGen0Auction(string _name, string _author, uint256 _initialPrice) external onlyCOO {
         require(gen0CreatedCount < GEN0_CREATION_LIMIT);
         //
-        uint256 kittyId = _createKitty(_name, _author, address(this));
+        uint256 kittyId = _createKitty(_name, _author, _initialPrice, address(this));
         _approve(kittyId, saleAuction);
         //        //
         saleAuction.createAuction(
@@ -1389,7 +1359,7 @@ contract KittyCore is KittyMinting {
         cooAddress = msg.sender;
 
         // start with the mythical kitten 0 - so we don't have generation-0 parent issues
-        _createKitty("Mona Lisa", "Leonardo da Vinci", address(0));
+        _createKitty("Big", "Secret", 10 ether, address(0));
     }
 
     /// @dev Used to mark the smart contract as upgraded, in case there is a serious
