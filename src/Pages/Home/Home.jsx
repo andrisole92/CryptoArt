@@ -20,12 +20,11 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.art);
+        window.contract = this.props.contract;
         for (let j = 0; j < this.props.auction.tokens.length; j++) {
 
         }
-        console.log(this.props.auction.tokens);
-        for (let i = 1; i < this.props.art.total; i++) {
+        for (let i = 1; i <= this.props.art.total; i++) {
             this.props.contract.core.methods.getKitty(i).call({from: window.web3.eth.defaultAccount}).then((r) => {
                 r.tokenId = i;
                 if (this.props.auction.tokens.indexOf(i) === -1) {

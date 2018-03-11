@@ -7,10 +7,11 @@ import contract from "./contract";
 import account from "./account";
 
 export default combineReducers({
-    routing: routerReducer,
     counter,
     art,
     auction,
     contract,
-    account
+    account,
+    routing: routerReducer
+
 })

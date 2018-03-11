@@ -49,7 +49,6 @@ class App extends React.Component {
 
         window.ccc = CryptoArt;
         CryptoArt.deployed().then((i) => {
-            window.core = i;
             this.props.setCore(new window.web3.eth.Contract(CryptoArt.abi, i.address));
             this.setState({coreLoaded:true});
             i.totalSupply.call().then((r)=>{
