@@ -414,8 +414,8 @@ contract ERC721Metadata {
 contract KittyOwnership is KittyBase, ERC721 {
 
     /// @notice Name and symbol of the non fungible token, as defined in ERC721.
-    string public constant name = "CryptoKitties";
-    string public constant symbol = "CK";
+    string public constant name = "CryptoArt";
+    string public constant symbol = "ART";
 
     // The contract that will return kitty metadata
     ERC721Metadata public erc721Metadata;
@@ -921,6 +921,35 @@ contract ClockAuctionBase is SafeMath {
         //  statement in the ClockAuction constructor). The result of this
         //  function is always guaranteed to be <= _price.
         return _price * ownerCut / 10000;
+    }
+
+    function auctionsOfOwner(address _owner) external view returns (uint256[] ownerTokens) {
+        uint256 tokenCount = balanceOf(_owner);
+
+        if (tokenCount == 0) {
+            // Return an empty array
+            return new uint256[](0);
+        } else {
+            uint256[] memory result = new uint256[](tokenCount);
+            uint256 totalCats = totalSupply();
+            uint256 resultIndex = 0;
+
+            // We count on the fact that all cats have IDs starting at 1 and increasing
+            // sequentially up to the totalCat count.
+            uint256 catId;
+
+            for (catId = 1; catId <= totalCats; catId++) {
+                if (kittyIndexToOwner[catId] == _owner) {
+                    Auction storage auction = tokenIdToAuction[catId];
+                    if (_isOnAuction(auction)){
+                        result[resultIndex] = catId;
+                        resultIndex++;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 
 }

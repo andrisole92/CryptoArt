@@ -1,0 +1,11 @@
+.Header {
+  &__logo{
+    width: 250px;
+
+    &__img {
+      width:100% !important;
+      max-width: 100%;
+    }
+
+  }
+}

@@ -1,0 +1,19 @@
+.SaleCard {
+
+  &__seller p {
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    strong {
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+    }
+
+  }
+}

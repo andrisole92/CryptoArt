@@ -1,9 +1,14 @@
 import React from "react";
-import './Card.css'
 import {Button, Card, Image} from "semantic-ui-react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {push} from 'react-router-redux'
+
 import utils from 'web3-utils'
+import bem from 'bem-cn';
+import art from '../../art';
+import './Card.css'
+
 
 class SaleCard extends React.Component {
 
@@ -19,10 +24,14 @@ class SaleCard extends React.Component {
     }
 
     render() {
+
+        const block = bem('SaleCard');
+
+        let img = "/img/"+art.find((e) => e.name === this.props.name).img;
         return (
-            <Card centered>
+            <Card className={block()} centered>
                 <div className="imgContainer">
-                    <Image className="testImage" src={this.props.img}/>
+                    <Image className="testImage" src={img}/>
                 </div>
                 <Card.Content>
                     <Card.Header>
@@ -31,8 +40,11 @@ class SaleCard extends React.Component {
                     <Card.Meta>
                         {this.props.artist}
                     </Card.Meta>
-                    <Card.Description>
-                        Owned by <strong>Mr Andresen</strong>
+                    <Card.Description className={block('seller')()}>
+                        <p>
+                            Sold by <strong
+                            onClick={() => this.props.galleryOf(this.props.seller)}>{this.props.seller}</strong>
+                        </p>
                     </Card.Description>
                     <Card.Meta>
                         Current price: {utils.fromWei(this.props.price)} Eth
@@ -51,7 +63,9 @@ const mapStateToProps = state => ({
     sale: state.contract.sale
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    galleryOf: (addr) => push('/owner/' + addr)
+}, dispatch);
 
 
 export default connect(

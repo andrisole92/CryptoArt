@@ -1,19 +1,23 @@
 export const SET_ADDRESS = 'account/SET_ADDRESS';
 export const SET_EMAIL = 'account/SET_EMAIL';
 export const SET_FULLNAME = 'account/SET_FULLNAME';
+export const SET_TOKENIDS = 'account/SET_TOKENIDS';
+export const SET_TOKENS = 'account/SET_TOKENS';
 
 const initialState = {
     address: "",
     email: "",
-    fullName: ""
-}
+    fullName: "",
+    tokens: null,
+    tokenIds: null
+};
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case SET_ADDRESS:
             return {
                 ...state,
-                email: action.address
+                address: action.address
             };
         case SET_EMAIL:
             return {
@@ -24,6 +28,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 fullName: action.fullName
+            };
+        case SET_TOKENS:
+            return {
+                ...state,
+                tokens: action.tokens
             };
 
         default:
@@ -56,6 +65,16 @@ export const setFullname = (fullName) => {
         dispatch({
             type: SET_FULLNAME,
             address: fullName
+        })
+
+    }
+};
+
+export const setTokens = (tokens) => {
+    return dispatch => {
+        dispatch({
+            type: SET_TOKENS,
+            tokens: tokens
         })
 
     }

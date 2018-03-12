@@ -1,0 +1,5 @@
+.Header__logo {
+  width: 250px; }
+  .Header__logo__img {
+    width: 100% !important;
+    max-width: 100%; }
