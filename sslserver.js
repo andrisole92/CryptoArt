@@ -8,10 +8,10 @@ const https = require('https');
 const app = express();
 
 let certOpts = {
-    cert: fs.readFileSync('./sslcert/fullchain.pem'),
-    key: fs.readFileSync('./sslcert/privkey.pem')
+    key: fs.readFileSync('./sslcert/privkey.pem'),
+    cert: fs.readFileSync('./sslcert/fullchain.pem')
 };
-https.createServer({}, app).listen(443);
+https.createServer({}, app).listen(9090);
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(require('helmet')());
