@@ -17,8 +17,8 @@ const app = express();
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(options, app);
 
-httpServer.listen(8082);
-httpsServer.listen(8081);
+httpServer.listen(80);
+httpsServer.listen(443);
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(require('helmet')());
