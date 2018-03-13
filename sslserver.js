@@ -14,7 +14,7 @@ let certOpts = {
 https.createServer({}, app).listen(443);
 
 app.use(express.static(path.join(__dirname, 'build')));
-
+app.use(require('helmet')());
 
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
