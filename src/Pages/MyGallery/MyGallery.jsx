@@ -13,15 +13,15 @@ import MyCard from "../../Components/MyCard/MyCard";
 
 class MyGallery extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             tokens: []
         }
     }
 
-    componentDidMount(){
-        this.props.contract.core.methods.tokensOfOwner(this.props.account.address).call({from: window.web3.eth.defaultAccount}).then((r)=>{
+    componentDidMount() {
+        this.props.contract.core.methods.tokensOfOwner(this.props.account.address).call({from: window.web3.eth.defaultAccount}).then((r) => {
             this.props.setTokens(r);
             for (let i = 0; i < r.length; i++) {
                 this.props.contract.core.methods.getKitty(r[i]).call({from: window.web3.eth.defaultAccount}).then((t) => {
@@ -34,21 +34,31 @@ class MyGallery extends React.Component {
         })
     }
 
-    onSell(tokenId){
+    onSell(tokenId) {
 
     }
 
     render() {
         let cards = this.state.tokens.map((a) => <MyCard key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId}
-                                                          name={a.name} owner={a.owner} img="/img/lisa.jpg"
-                                                          artist={a.author}/>);
+                                                         name={a.name} owner={a.owner} img="/img/lisa.jpg"
+                                                         artist={a.author}/>);
+        let auctionTokens = this.props.auction.byPage.filter((t) => {
+            return t.seller === window.web3.eth.defaultAccount;
+        });
+        let auctionCards = auctionTokens.map((a) => <MyCard key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId}
+                                                                name={a.name} owner={a.owner} img="/img/lisa.jpg"
+                                                                artist={a.author} isAuction onCancelAuction={()=>this.onCancelAuction()}/>);
+        console.log(auctionTokens);
         const block = bem('MyGallery');
         return (
             <div className={block()}>
                 <p>My Gallery</p>
                 <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
-
                     {cards}
+                </Card.Group>
+                <p>My Auctions</p>
+                <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
+                    {auctionCards}
                 </Card.Group>
             </div>
         );
@@ -57,7 +67,8 @@ class MyGallery extends React.Component {
 
 const mapStateToProps = state => ({
     account: state.account,
-    contract: state.contract
+    contract: state.contract,
+    auction: state.auction
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

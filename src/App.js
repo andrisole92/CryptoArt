@@ -16,8 +16,8 @@ import {bindActionCreators} from "redux";
 
 
 import {setSale, setCore} from './modules/contract'
-import {setAuctionTotal, setTokenArray} from './modules/auction'
-import {setTotal} from './modules/art'
+import {addAuction, setAuctionTotal, setTokenArray} from './modules/auction'
+import {addArt, setTotal} from './modules/art'
 import Loader from "./Components/Loader/Loader";
 import GalleryOf from "./Pages/GalleryOf/GalleryOf";
 import {setAddress} from "./modules/account";
@@ -50,6 +50,13 @@ class App extends React.Component {
             this.props.setAddress(accs[0]);
 
         });
+        setInterval(function() {
+            window.web3.eth.getAccounts().then((accs) => {
+                if (window.web3.eth.defaultAccount !== accs[0]){
+                    window.location.reload();
+                }
+            });
+        }, 100);
         const CryptoArt = Contract(CryptoArtContract);
         const SaleAuction = Contract(SaleClockAuctionContract);
         CryptoArt.setProvider(window.web3.currentProvider);
@@ -67,23 +74,47 @@ class App extends React.Component {
                 window.sale = s;
                 this.props.setSale(new window.web3.eth.Contract(SaleAuction.abi, s.address));
                 this.setState({saleLoaded: true});
-                i.balanceOf(s.address).then((r2) => {
-                    this.props.setAuctionTotal(r2.c[0]);
-                });
                 i.tokensOfOwner(s.address).then((r) => {
                     let arr = [];
                     arr = r.map((t) => t.c[0]);
                     this.props.setTokenArray(arr);
+                    this.props.setAuctionTotal(arr.length);
+                    this.bothContractsReady()
                 });
 
-                this.bothContractsReady()
             });
         });
 
     }
 
     bothContractsReady() {
-
+        for (let i = 1; i <= this.props.art.total; i++) {
+            if (this.props.art.allArt.find((e) => e.tokenId === i) !== undefined || this.props.auction.byPage.find((e) => e.tokenId === i) !== undefined) continue;
+            this.props.contract.core.methods.getKitty(i).call({from: window.web3.eth.defaultAccount}).then((r) => {
+                r.tokenId = i;
+                if (this.props.auction.tokens.indexOf(i) === -1) {
+                    return this.props.contract.core.methods.ownerOf(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
+                        r.owner = p;
+                        this.props.addArt(r);
+                    });
+                } else {
+                    return this.props.contract.sale.methods.getAuction(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
+                        let unixTime = parseInt((new Date()).getTime() / 1000, 0);
+                        let currentPrice;
+                        if ((parseInt(p.duration, 0) + parseInt(p.startedAt, 0)) > Date.now()) {
+                            currentPrice = p.endingPrice;
+                        } else {
+                            let totalPriceChange = (parseInt(p.endingPrice, 0) - parseInt(p.startingPrice, 0));
+                            let currentPriceChange = totalPriceChange * ((unixTime - parseInt(p.startedAt, 0)) / p.duration);
+                            currentPrice = parseInt(currentPriceChange,0) + parseInt(p.startingPrice,0);
+                        }
+                        r.currentPrice = currentPrice.toString();
+                        r.seller = p.seller;
+                        this.props.addAuction(r)
+                    });
+                }
+            })
+        }
     }
 
 
@@ -116,7 +147,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setTotal,
     setAuctionTotal,
     setTokenArray,
-    setAddress
+    setAddress,
+    addAuction,
+    addArt
 }, dispatch);
 
 export default withRouter(connect(

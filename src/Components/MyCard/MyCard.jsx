@@ -40,10 +40,19 @@ class CardArt extends React.Component<Props, State> {
         this.setState({sellPressed: true});
     }
 
+    onCancelAuction(){
+        this.props.sale.methods.cancelAuction(parseInt(this.props.tokenId)).send({from: window.web3.eth.defaultAccount}).then((r)=>{
+            console.log(r)
+        }).catch((e)=> console.log(e))
+    }
+
     render() {
         const block = bem('MyCard');
 
         let img = "/img/"+art.find((e) => e.name === this.props.name).img;
+
+        let actionText = this.props.isAuction ? "Cancel Auction" : "Create Auction";
+        let action = this.props.isAuction ? () => this.onCancelAuction() : () => this.onOpenForm();
 
         return (
                 <Card centered className={block()}>
@@ -63,7 +72,7 @@ class CardArt extends React.Component<Props, State> {
                         </Card.Meta>
                     </Card.Content>
                     <Card.Content extra>
-                        <Button onClick={() => this.onOpenForm()} basic fluid color='teal'>Create Auction</Button>
+                        <Button onClick={action} basic fluid color={this.props.isAuction ? "red" : "teal"}>{actionText}</Button>
                     </Card.Content>
                 </Card>
 
