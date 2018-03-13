@@ -8,7 +8,7 @@ const https = require('https');
 // const certificate = fs.readFileSync('./sslcert/fullchain.pem', 'utf8');
 const options = {
     key: fs.readFileSync('./sslcert/privkey.pem'),
-    cert: fs.readFileSync('./ssslcert/fullchain.pem')
+    cert: fs.readFileSync('./sslcert/fullchain.pem')
 };
 // const credentials = {key: privateKey, cert: certificate};
 const express = require('express');
