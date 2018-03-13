@@ -7,10 +7,10 @@ const https = require('https');
 
 const app = express();
 
-// let certOpts = {
-//     cert: fs.readFileSync('./sslcert/fullchain.pem'),
-//     key: fs.readFileSync('./sslcert/privkey.pem')
-// };
+let certOpts = {
+    cert: fs.readFileSync('./sslcert/fullchain.pem'),
+    key: fs.readFileSync('./sslcert/privkey.pem')
+};
 https.createServer({}, app).listen(443);
 
 app.use(express.static(path.join(__dirname, 'build')));
