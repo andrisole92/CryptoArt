@@ -24,10 +24,11 @@ app.get('/*', function (req, res) {
 let httpApp = express();
 let httpServer = http.createServer(httpApp);
 
+httpApp.use(express.static(path.join(__dirname, 'build')));
 
 // set up a route to redirect http to https
 httpApp.get('*', function(req, res) {
-    res.redirect('https://' + req.headers.host + req.url);
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 httpServer.listen(80);
