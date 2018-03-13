@@ -20,33 +20,6 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        for (let i = 1; i <= this.props.art.total; i++) {
-            if (this.props.art.allArt.find((e) => e.tokenId === i) !== undefined || this.props.auction.byPage.find((e) => e.tokenId === i) !== undefined) continue;
-            this.props.contract.core.methods.getKitty(i).call({from: window.web3.eth.defaultAccount}).then((r) => {
-                r.tokenId = i;
-                if (this.props.auction.tokens.indexOf(i) === -1) {
-                    return this.props.contract.core.methods.ownerOf(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
-                        r.owner = p;
-                        this.props.addArt(r);
-                    });
-                } else {
-                    return this.props.contract.sale.methods.getAuction(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
-                        let unixTime = parseInt((new Date()).getTime() / 1000, 0);
-                        let currentPrice;
-                        if ((parseInt(p.duration, 0) + parseInt(p.startedAt, 0)) > Date.now()) {
-                            currentPrice = p.endingPrice;
-                        } else {
-                            let totalPriceChange = (parseInt(p.endingPrice, 0) - parseInt(p.startingPrice, 0));
-                            let currentPriceChange = totalPriceChange * ((unixTime - parseInt(p.startedAt, 0)) / p.duration);
-                            currentPrice = parseInt(currentPriceChange,0) + parseInt(p.startingPrice,0);
-                        }
-                        r.currentPrice = currentPrice.toString();
-                        r.seller = p.seller;
-                        this.props.addAuction(r)
-                    });
-                }
-            })
-        }
     }
 
 
