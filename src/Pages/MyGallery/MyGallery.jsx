@@ -34,31 +34,17 @@ class MyGallery extends React.Component {
         })
     }
 
-    onSell(tokenId) {
-
-    }
 
     render() {
         let cards = this.state.tokens.map((a) => <MyCard key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId}
                                                          name={a.name} owner={a.owner} img="/img/lisa.jpg"
-                                                         artist={a.author}/>);
-        let auctionTokens = this.props.auction.byPage.filter((t) => {
-            return t.seller === window.web3.eth.defaultAccount;
-        });
-        let auctionCards = auctionTokens.map((a) => <MyCard key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId}
-                                                                name={a.name} owner={a.owner} img="/img/lisa.jpg"
-                                                                artist={a.author} isAuction onCancelAuction={()=>this.onCancelAuction()}/>);
-        console.log(auctionTokens);
+                                                         artist={a.artist}/>);
         const block = bem('MyGallery');
         return (
             <div className={block()}>
                 <p>My Gallery</p>
                 <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
                     {cards}
-                </Card.Group>
-                <p>My Auctions</p>
-                <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
-                    {auctionCards}
                 </Card.Group>
             </div>
         );

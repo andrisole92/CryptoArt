@@ -12,6 +12,7 @@ import SaleClockAuctionContract from './contracts/SaleClockAuction.json'
 import CryptoArtContract from './contracts/KittyCore.json'
 import Web3 from 'web3';
 import {connect} from "react-redux";
+import {push} from "react-router-redux";
 import {bindActionCreators} from "redux";
 
 
@@ -21,6 +22,9 @@ import {addArt, setTotal} from './modules/art'
 import Loader from "./Components/Loader/Loader";
 import GalleryOf from "./Pages/GalleryOf/GalleryOf";
 import {setAddress} from "./modules/account";
+import BuyArt from "./Pages/BuyArt/BuyArt";
+import FAQ from "./Pages/FAQ/FAQ";
+import NeedWeb3 from "./Pages/NeedWeb3/NeedWeb3";
 
 
 class App extends React.Component {
@@ -31,20 +35,31 @@ class App extends React.Component {
         this.state = {
             saleLoaded: false,
             coreLoaded: false,
-            error: false
+            error: false,
+            noWeb3: false
         }
     }
 
     componentDidMount() {
-        console.log('componentDidMount3')
+        console.log('componentDidMount3');
         if (typeof window.web3 !== 'undefined') {
             this.web3Provider = window.web3.currentProvider;
             window.web3 = new Web3(window.web3.currentProvider);
+            this.web3Ready();
         } else {
+            this.setState({noWeb3:true})
+            this.props.goTo('/dapp');
             // set the provider you want from Web3.providers
-            this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
-            window.web3 = new Web3(this.web3Provider);
+            // this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
+            // window.web3 = new Web3(this.web3Provider);
         }
+        // this.props.goTo('/dapp');
+
+
+
+
+    }
+    web3Ready(){
         window.web3.eth.getAccounts().then((accs) => {
             window.web3.eth.defaultAccount = accs[0];
             this.props.setAddress(accs[0]);
@@ -84,7 +99,6 @@ class App extends React.Component {
 
             });
         });
-
     }
 
     bothContractsReady() {
@@ -123,12 +137,15 @@ class App extends React.Component {
             <div>
                 <Header></Header>
                 <Loader
-                    loaded={this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== null && this.props.auction.tokens !== null}>
+                    loaded={(this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== null && this.props.auction.tokens !== null) || this.state.noWeb3}>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/sign-in" component={SignIn}/>
                     <Route exact path="/my-cabinet" component={MyCabinet}/>
                     <Route exact path="/owner/:address" component={GalleryOf}/>
                     <Route exact path="/admin" component={Admin}/>
+                    <Route exact path="/faq" component={FAQ}/>
+                    <Route exact path="/dapp" component={NeedWeb3}/>
+                    <Route exact path="/buy/:tokenId" component={BuyArt}/>
                 </Loader>
 
             </div>
@@ -149,7 +166,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setTokenArray,
     setAddress,
     addAuction,
-    addArt
+    addArt,
+    goTo: (route) => push(route)
 }, dispatch);
 
 export default withRouter(connect(

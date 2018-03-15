@@ -68,11 +68,8 @@ class CardArt extends React.Component<Props, State> {
                             {this.props.artist}
                         </Card.Meta>
                         <Card.Meta>
-                            Current price: {utils.fromWei(this.props.price) * 2} Eth
+                            Current price: {utils.fromWei(this.props.price)} Eth
                         </Card.Meta>
-                    </Card.Content>
-                    <Card.Content extra>
-                        <Button onClick={action} basic fluid color={this.props.isAuction ? "red" : "teal"}>{actionText}</Button>
                     </Card.Content>
                 </Card>
 

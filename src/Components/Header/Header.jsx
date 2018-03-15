@@ -24,7 +24,9 @@ class Header extends React.Component {
             <div>
                 <Menu>
                     <Menu.Item className={block('logo')()} header onClick={this.props.home}><img className={block('logo')('img')()} src="/img/logo.png"/> </Menu.Item>
+                    <Menu.Item name='Marketplace' onClick={this.props.home}/>
                     <Menu.Item name='myCabinet' onClick={this.props.myCabinet}/>
+                    <Menu.Item onClick={() => this.props.goTo('/FAQ')}>FAQ</Menu.Item>
                     <Menu.Item name='SignIn' onClick={this.props.signIn}/>
                 </Menu>
 
@@ -34,6 +36,7 @@ class Header extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    goTo: (route) => push(route),
     home: () => push('/'),
     myCabinet: () => push('/my-cabinet'),
     signIn: () => push('/sign-in'),

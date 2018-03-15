@@ -229,7 +229,7 @@ contract KittyBase is KittyAccessControl, SafeMath {
         // The Kitty's genetic code is packed into these 256-bits, the format is
         // sooper-sekret! A cat's genes never change.
         string name;
-        string author;
+        string artist;
         uint64 birthTime;
         uint256 lastPrice;
 
@@ -298,11 +298,6 @@ contract KittyBase is KittyAccessControl, SafeMath {
     mapping(uint256 => address) public kittyIndexToApproved;
 
 
-    /// @dev The address of the ClockAuction contract that handles sales of Kitties. This
-    ///  same contract handles both peer-to-peer sales as well as the gen0 sales which are
-    ///  initiated every 15 minutes.
-    SaleClockAuction public saleAuction;
-
     /// @dev The address of a custom ClockAuction subclassed contract that handles siring
     ///  auctions. Needs to be separate from saleAuction because the actions taken on success
     ///  after a sales and siring auction are quite different.
@@ -332,7 +327,7 @@ contract KittyBase is KittyAccessControl, SafeMath {
     /// @param _owner The inital owner of this cat, must be non-zero (except for the unKitty, ID 0)
     function _createKitty(
         string _name,
-        string _author,
+        string _artist,
         uint _initialPrice,
         address _owner
 
@@ -349,7 +344,7 @@ contract KittyBase is KittyAccessControl, SafeMath {
 
         Kitty memory _kitty = Kitty({
             name : _name,
-            author : _author,
+            artist : _artist,
             lastPrice : _initialPrice,
             birthTime : uint64(now)
             });
@@ -371,12 +366,6 @@ contract KittyBase is KittyAccessControl, SafeMath {
         _transfer(0, _owner, newKittenId);
 
         return newKittenId;
-    }
-
-
-    function setLastPrice(uint256 _tokenId, uint256 _value) {
-        Kitty storage kit = kitties[_tokenId];
-        kit.lastPrice = _value;
     }
 }
 
@@ -508,7 +497,6 @@ contract KittyOwnership is KittyBase, ERC721 {
         // Disallow transfers to the auction contracts to prevent accidental
         // misuse. Auction contracts should only take ownership of kitties
         // through the allow + transferFrom flow.
-        require(_to != address(saleAuction));
 
         // You can only send your own cat.
         require(_owns(msg.sender, _tokenId));
@@ -673,293 +661,6 @@ contract KittyOwnership is KittyBase, ERC721 {
 }
 
 
-
-
-
-
-
-
-
-
-/// @title Auction Core
-/// @dev Contains models, variables, and internal methods for the auction.
-/// @notice We omit a fallback function to prevent accidental sends to this contract.
-contract ClockAuctionBase is SafeMath {
-
-    KittyAuction public kittyAuction;
-
-    // Represents an auction on an NFT
-    struct Auction {
-        // Current owner of NFT
-        address seller;
-        // Price (in wei) at beginning of auction
-        uint128 startingPrice;
-        // Price (in wei) at end of auction
-        uint128 endingPrice;
-        // Duration (in seconds) of auction
-        uint64 duration;
-        // Time when auction started
-        // NOTE: 0 if this auction has been concluded
-        uint64 startedAt;
-    }
-
-    // Reference to contract tracking NFT ownership
-    ERC721 public nonFungibleContract;
-
-    // Cut owner takes on each auction, measured in basis points (1/100 of a percent).
-    // Values 0-10,000 map to 0%-100%
-    uint256 public ownerCut;
-
-    // Map from token ID to their corresponding auction.
-    mapping(uint256 => Auction) tokenIdToAuction;
-
-    event AuctionCreated(uint256 tokenId, uint256 startingPrice, uint256 endingPrice, uint256 duration);
-    event AuctionSuccessful(uint256 tokenId, uint256 totalPrice, address winner);
-    event AuctionCancelled(uint256 tokenId);
-
-    /// @dev Returns true if the claimant owns the token.
-    /// @param _claimant - Address claiming to own the token.
-    /// @param _tokenId - ID of token whose ownership to verify.
-    function _owns(address _claimant, uint256 _tokenId) internal view returns (bool) {
-        return (nonFungibleContract.ownerOf(_tokenId) == _claimant);
-    }
-
-    /// @dev Escrows the NFT, assigning ownership to this contract.
-    /// Throws if the escrow fails.
-    /// @param _owner - Current owner address of token to escrow.
-    /// @param _tokenId - ID of token whose approval to verify.
-    function _escrow(address _owner, uint256 _tokenId) internal {
-        // it will throw if transfer fails
-        nonFungibleContract.transferFrom(_owner, this, _tokenId);
-    }
-
-    /// @dev Transfers an NFT owned by this contract to another address.
-    /// Returns true if the transfer succeeds.
-    /// @param _receiver - Address to transfer NFT to.
-    /// @param _tokenId - ID of token to transfer.
-    function _transfer(address _receiver, uint256 _tokenId) internal {
-        // it will throw if transfer fails
-        nonFungibleContract.transfer(_receiver, _tokenId);
-    }
-
-    /// @dev Adds an auction to the list of open auctions. Also fires the
-    ///  AuctionCreated event.
-    /// @param _tokenId The ID of the token to be put on auction.
-    /// @param _auction Auction to add.
-    function _addAuction(uint256 _tokenId, Auction _auction) internal {
-        // Require that all auctions have a duration of
-        // at least one minute. (Keeps our math from getting hairy!)
-        require(_auction.duration >= 1 minutes);
-
-        tokenIdToAuction[_tokenId] = _auction;
-
-        AuctionCreated(
-            uint256(_tokenId),
-            uint256(_auction.startingPrice),
-            uint256(_auction.endingPrice),
-            uint256(_auction.duration)
-        );
-    }
-
-    /// @dev Cancels an auction unconditionally.
-    function _cancelAuction(uint256 _tokenId, address _seller) internal {
-        _removeAuction(_tokenId);
-        _transfer(_seller, _tokenId);
-        AuctionCancelled(_tokenId);
-    }
-
-    /// @dev Computes the price and transfers winnings.
-    /// Does NOT transfer ownership of token.
-    function _bid(uint256 _tokenId, uint256 _bidAmount)
-    internal
-    returns (uint256)
-    {
-        // Get a reference to the auction struct
-        Auction storage auction = tokenIdToAuction[_tokenId];
-
-        // Explicitly check that this auction is currently live.
-        // (Because of how Ethereum mappings work, we can't just count
-        // on the lookup above failing. An invalid _tokenId will just
-        // return an auction object that is all zeros.)
-        require(_isOnAuction(auction));
-
-        // Check that the bid is greater than or equal to the current price
-        uint256 price = _currentPrice(auction);
-        require(_bidAmount >= price);
-
-
-        // Grab a reference to the seller before the auction struct
-        // gets deleted.
-        address seller = auction.seller;
-
-        // The bid is good! Remove the auction before sending the fees
-        // to the sender so we can't have a reentrancy attack.
-        _removeAuction(_tokenId);
-
-        // Transfer proceeds to seller (if there are any!)
-        if (price > 0) {
-            // Calculate the auctioneer's cut.
-            // (NOTE: _computeCut() is guaranteed to return a
-            // value <= price, so this subtraction can't go negative.)
-            uint256 auctioneerCut = _computeCut(price);
-            uint256 sellerProceeds = price - auctioneerCut;
-
-            // NOTE: Doing a transfer() in the middle of a complex
-            // method like this is generally discouraged because of
-            // reentrancy attacks and DoS attacks if the seller is
-            // a contract with an invalid fallback function. We explicitly
-            // guard against reentrancy attacks by removing the auction
-            // before calling transfer(), and the only thing the seller
-            // can DoS is the sale of their own asset! (And if it's an
-            // accident, they can call cancelAuction(). )
-            seller.transfer(sellerProceeds);
-        }
-        kittyAuction.setKittyLastPrice(price, _tokenId);
-
-        // Calculate any excess funds included with the bid. If the excess
-        // is anything worth worrying about, transfer it back to bidder.
-        // NOTE: We checked above that the bid amount is greater than or
-        // equal to the price so this cannot underflow.
-        uint256 bidExcess = _bidAmount - price;
-
-        // Return the funds. Similar to the previous transfer, this is
-        // not susceptible to a re-entry attack because the auction is
-        // removed before any transfers occur.
-        msg.sender.transfer(bidExcess);
-
-        // Tell the world!
-        AuctionSuccessful(_tokenId, price, msg.sender);
-
-        return price;
-    }
-
-    /// @dev Removes an auction from the list of open auctions.
-    /// @param _tokenId - ID of NFT on auction.
-    function _removeAuction(uint256 _tokenId) internal {
-        delete tokenIdToAuction[_tokenId];
-    }
-
-    /// @dev Returns true if the NFT is on auction.
-    /// @param _auction - Auction to check.
-    function _isOnAuction(Auction storage _auction) internal view returns (bool) {
-        return (_auction.startedAt > 0);
-    }
-
-    /// @dev Returns current price of an NFT on auction. Broken into two
-    ///  functions (this one, that computes the duration from the auction
-    ///  structure, and the other that does the price computation) so we
-    ///  can easily test that the price computation works correctly.
-    function _currentPrice(Auction storage _auction)
-    internal
-    view
-    returns (uint256)
-    {
-        uint256 secondsPassed = 0;
-
-        // A bit of insurance against negative values (or wraparound).
-        // Probably not necessary (since Ethereum guarnatees that the
-        // now variable doesn't ever go backwards).
-        if (now > _auction.startedAt) {
-            secondsPassed = now - _auction.startedAt;
-        }
-
-        return _computeCurrentPrice(
-            _auction.startingPrice,
-            _auction.endingPrice,
-            _auction.duration,
-            secondsPassed
-        );
-    }
-
-    /// @dev Computes the current price of an auction. Factored out
-    ///  from _currentPrice so we can run extensive unit tests.
-    ///  When testing, make this function public and turn on
-    ///  `Current price computation` test suite.
-    function _computeCurrentPrice(
-        uint256 _startingPrice,
-        uint256 _endingPrice,
-        uint256 _duration,
-        uint256 _secondsPassed
-    )
-    internal
-    pure
-    returns (uint256)
-    {
-        // NOTE: We don't use SafeMath (or similar) in this function because
-        //  all of our public functions carefully cap the maximum values for
-        //  time (at 64-bits) and currency (at 128-bits). _duration is
-        //  also known to be non-zero (see the require() statement in
-        //  _addAuction())
-        if (_secondsPassed >= _duration) {
-            // We've reached the end of the dynamic pricing portion
-            // of the auction, just return the end price.
-            return _endingPrice;
-        } else {
-            // Starting price can be higher than ending price (and often is!), so
-            // this delta can be negative.
-            int256 totalPriceChange = int256(_endingPrice) - int256(_startingPrice);
-
-            // This multiplication can't overflow, _secondsPassed will easily fit within
-            // 64-bits, and totalPriceChange will easily fit within 128-bits, their product
-            // will always fit within 256-bits.
-            int256 currentPriceChange = totalPriceChange * int256(_secondsPassed) / int256(_duration);
-
-            // currentPriceChange can be negative, but if so, will have a magnitude
-            // less that _startingPrice. Thus, this result will always end up positive.
-            int256 currentPrice = int256(_startingPrice) + currentPriceChange;
-
-            return uint256(currentPrice);
-        }
-    }
-
-    /// @dev Computes owner's cut of a sale.
-    /// @param _price - Sale price of NFT.
-    function _computeCut(uint256 _price) internal view returns (uint256) {
-        // NOTE: We don't use SafeMath (or similar) in this function because
-        //  all of our entry functions carefully cap the maximum values for
-        //  currency (at 128-bits), and ownerCut <= 10000 (see the require()
-        //  statement in the ClockAuction constructor). The result of this
-        //  function is always guaranteed to be <= _price.
-        return _price * ownerCut / 10000;
-    }
-
-    function auctionsOfOwner(address _owner) external view returns (uint256[] ownerTokens) {
-        uint256 tokenCount = balanceOf(_owner);
-
-        if (tokenCount == 0) {
-            // Return an empty array
-            return new uint256[](0);
-        } else {
-            uint256[] memory result = new uint256[](tokenCount);
-            uint256 totalCats = totalSupply();
-            uint256 resultIndex = 0;
-
-            // We count on the fact that all cats have IDs starting at 1 and increasing
-            // sequentially up to the totalCat count.
-            uint256 catId;
-
-            for (catId = 1; catId <= totalCats; catId++) {
-                if (kittyIndexToOwner[catId] == _owner) {
-                    Auction storage auction = tokenIdToAuction[catId];
-                    if (_isOnAuction(auction)){
-                        result[resultIndex] = catId;
-                        resultIndex++;
-                    }
-                }
-            }
-
-            return result;
-        }
-    }
-
-}
-
-
-
-
-
-
-
 /**
  * @title Pausable
  * @dev Base contract which allows children to implement an emergency stop mechanism.
@@ -1007,325 +708,22 @@ contract Pausable is Ownable {
 }
 
 
-/// @title Clock auction for non-fungible tokens.
-/// @notice We omit a fallback function to prevent accidental sends to this contract.
-contract ClockAuction is Pausable, ClockAuctionBase {
-
-    /// @dev The ERC-165 interface signature for ERC-721.
-    ///  Ref: https://github.com/ethereum/EIPs/issues/165
-    ///  Ref: https://github.com/ethereum/EIPs/issues/721
-    bytes4 constant InterfaceSignature_ERC721 = bytes4(0x9a20483d);
-
-    /// @dev Constructor creates a reference to the NFT ownership contract
-    ///  and verifies the owner cut is in the valid range.
-    /// @param _nftAddress - address of a deployed contract implementing
-    ///  the Nonfungible Interface.
-    /// @param _cut - percent cut the owner takes on each auction, must be
-    ///  between 0-10,000.
-    function ClockAuction(address _nftAddress, uint256 _cut) public {
-        require(_cut <= 10000);
-        ownerCut = _cut;
-
-        ERC721 candidateContract = ERC721(_nftAddress);
-        require(candidateContract.supportsInterface(InterfaceSignature_ERC721));
-        nonFungibleContract = candidateContract;
-    }
-
-    /// @dev Remove all Ether from the contract, which is the owner's cuts
-    ///  as well as any Ether sent directly to the contract address.
-    ///  Always transfers to the NFT contract, but can be called either by
-    ///  the owner or the NFT contract.
-    function withdrawBalance() external {
-        address nftAddress = address(nonFungibleContract);
-
-        require(
-            msg.sender == owner ||
-            msg.sender == nftAddress
-        );
-        // We are using this boolean method to make sure that even if one fails it will still work
-        bool res = nftAddress.send(this.balance);
-    }
-
-    /// @dev Creates and begins a new auction.
-    /// @param _tokenId - ID of token to auction, sender must be owner.
-    /// @param _startingPrice - Price of item (in wei) at beginning of auction.
-    /// @param _endingPrice - Price of item (in wei) at end of auction.
-    /// @param _duration - Length of time to move between starting
-    ///  price and ending price (in seconds).
-    /// @param _seller - Seller, if not the message sender
-    function createAuction(
-        uint256 _tokenId,
-        uint256 _startingPrice,
-        uint256 _endingPrice,
-        uint256 _duration,
-        address _seller
-    )
-    external
-    whenNotPaused
-    {
-        // Sanity check that no inputs overflow how many bits we've allocated
-        // to store them in the auction struct.
-        require(_startingPrice == uint256(uint128(_startingPrice)));
-        require(_endingPrice == uint256(uint128(_endingPrice)));
-        require(_duration == uint256(uint64(_duration)));
-
-        require(_owns(msg.sender, _tokenId));
-        _escrow(msg.sender, _tokenId);
-        Auction memory auction = Auction(
-            _seller,
-            uint128(_startingPrice),
-            uint128(_endingPrice),
-            uint64(_duration),
-            uint64(now)
-        );
-        _addAuction(_tokenId, auction);
-    }
-
-    /// @dev Bids on an open auction, completing the auction and transferring
-    ///  ownership of the NFT if enough Ether is supplied.
-    /// @param _tokenId - ID of token to bid on.
-    function bid(uint256 _tokenId)
-    external
-    payable
-    whenNotPaused
-    {
-        // _bid will throw if the bid or funds transfer fails
-        _bid(_tokenId, msg.value);
-        _transfer(msg.sender, _tokenId);
-    }
-
-    /// @dev Cancels an auction that hasn't been won yet.
-    ///  Returns the NFT to original owner.
-    /// @notice This is a state-modifying function that can
-    ///  be called while the contract is paused.
-    /// @param _tokenId - ID of token on auction
-    function cancelAuction(uint256 _tokenId)
-    external
-    {
-        Auction storage auction = tokenIdToAuction[_tokenId];
-        require(_isOnAuction(auction));
-        address seller = auction.seller;
-        require(msg.sender == seller);
-        _cancelAuction(_tokenId, seller);
-    }
-
-    /// @dev Cancels an auction when the contract is paused.
-    ///  Only the owner may do this, and NFTs are returned to
-    ///  the seller. This should only be used in emergencies.
-    /// @param _tokenId - ID of the NFT on auction to cancel.
-    function cancelAuctionWhenPaused(uint256 _tokenId)
-    whenPaused
-    onlyOwner
-    external
-    {
-        Auction storage auction = tokenIdToAuction[_tokenId];
-        require(_isOnAuction(auction));
-        _cancelAuction(_tokenId, auction.seller);
-    }
-
-    /// @dev Returns auction info for an NFT on auction.
-    /// @param _tokenId - ID of NFT on auction.
-    function getAuction(uint256 _tokenId)
-    external
-    view
-    returns
-    (
-        address seller,
-        uint256 startingPrice,
-        uint256 endingPrice,
-        uint256 duration,
-        uint256 startedAt
-    ) {
-        Auction storage auction = tokenIdToAuction[_tokenId];
-        require(_isOnAuction(auction));
-        return (
-        auction.seller,
-        auction.startingPrice,
-        auction.endingPrice,
-        auction.duration,
-        auction.startedAt
-        );
-    }
-
-    /// @dev Returns the current price of an auction.
-    /// @param _tokenId - ID of the token price we are checking.
-    function getCurrentPrice(uint256 _tokenId)
-    external
-    view
-    returns (uint256)
-    {
-        Auction storage auction = tokenIdToAuction[_tokenId];
-        require(_isOnAuction(auction));
-        return _currentPrice(auction);
-    }
-
-}
-
-
-
-/// @title Clock auction modified for sale of kitties
-/// @notice We omit a fallback function to prevent accidental sends to this contract.
-contract SaleClockAuction is ClockAuction {
-
-    // @dev Sanity check that allows us to ensure that we are pointing to the
-    //  right auction in our setSaleAuctionAddress() call.
-    bool public isSaleClockAuction = true;
-
-    // Tracks last 5 sale price of gen0 kitty sales
-    uint256 public gen0SaleCount;
-    uint256[5] public lastGen0SalePrices;
-
-    // Delegate constructor
-    function SaleClockAuction(address _nftAddr, uint256 _cut) public ClockAuction(_nftAddr, _cut) {
-        KittyAuction candidateContract = KittyAuction(_nftAddr);
-        kittyAuction = candidateContract;
-    }
-
-    /// @dev Creates and begins a new auction.
-    /// @param _tokenId - ID of token to auction, sender must be owner.
-    /// @param _startingPrice - Price of item (in wei) at beginning of auction.
-    /// @param _endingPrice - Price of item (in wei) at end of auction.
-    /// @param _duration - Length of auction (in seconds).
-    /// @param _seller - Seller, if not the message sender
-    function createAuction(
-        uint256 _tokenId,
-        uint256 _startingPrice,
-        uint256 _endingPrice,
-        uint256 _duration,
-        address _seller
-    )
-    external
-    {
-        // Sanity check that no inputs overflow how many bits we've allocated
-        // to store them in the auction struct.
-        require(_startingPrice == uint256(uint128(_startingPrice)));
-        require(_endingPrice == uint256(uint128(_endingPrice)));
-        require(_duration == uint256(uint64(_duration)));
-        //
-        require(msg.sender == address(nonFungibleContract));
-        _escrow(_seller, _tokenId);
-        Auction memory auction = Auction(
-            _seller,
-            uint128(_startingPrice),
-            uint128(_endingPrice),
-            uint64(_duration),
-            uint64(now)
-        );
-        _addAuction(_tokenId, auction);
-        kittyAuction.setKittyLastPrice(_startingPrice / 2, _tokenId);
-    }
-
-    /// @dev Updates lastSalePrice if seller is the nft contract
-    /// Otherwise, works the same as default bid method.
-    function bid(uint256 _tokenId)
-    external
-    payable
-    {
-        // _bid verifies token ID size
-        address seller = tokenIdToAuction[_tokenId].seller;
-        uint256 price = _bid(_tokenId, msg.value);
-        _transfer(msg.sender, _tokenId);
-
-    }
-
-}
-
-
-/// @title Handles creating auctions for sale and siring of kitties.
-///  This wrapper of ReverseAuction exists only so that users can create
-///  auctions with only one transaction.
-contract KittyAuction is KittyOwnership {
-
-    // @notice The auction contract variables are defined in KittyBase to allow
-    //  us to refer to them in KittyOwnership to prevent accidental transfers.
-    // `saleAuction` refers to the auction for gen0 and p2p sale of kitties.
-    // `siringAuction` refers to the auction for siring rights of kitties.
-
-    /// @dev Sets the reference to the sale auction.
-    /// @param _address - Address of sale contract.
-    function setSaleAuctionAddress(address _address) external onlyCEO {
-        SaleClockAuction candidateContract = SaleClockAuction(_address);
-
-        // NOTE: verify that a contract is what we expect - https://github.com/Lunyr/crowdsale-contracts/blob/cfadd15986c30521d8ba7d5b6f57b4fefcc7ac38/contracts/LunyrToken.sol#L117
-        require(candidateContract.isSaleClockAuction());
-
-        // Set the new contract address
-        saleAuction = candidateContract;
-    }
-
-
-    /// @dev Put a kitty up for auction.
-    ///  Does some ownership trickery to create auctions in one tx.
-    function createSaleAuction(
-        uint256 _kittyId,
-        uint256 _startingPrice,
-        uint256 _endingPrice,
-        uint256 _duration
-    )
-    external
-    whenNotPaused
-    {
-        // Auction contract checks input sizes
-        // If kitty is already on any auction, this will throw
-        // because it will be owned by the auction contract.
-        require(_owns(msg.sender, _kittyId));
-        // Ensure the kitty is not pregnant to prevent the auction
-        // contract accidentally receiving ownership of the child.
-        // NOTE: the kitty IS allowed to be in a cooldown.
-        //        require(!isPregnant(_kittyId));
-        _approve(_kittyId, saleAuction);
-        // Sale auction throws if inputs are invalid and clears
-        // transfer and sire approval after escrowing the kitty.
-        saleAuction.createAuction(
-            _kittyId,
-            _startingPrice,
-            _endingPrice,
-            _duration,
-            msg.sender
-        );
-    }
-    /// @dev Transfers the balance of the sale auction contract
-    /// to the KittyCore contract. We use two-step withdrawal to
-    /// prevent two transfer calls in the auction bid function.
-    function withdrawAuctionBalances() external onlyCLevel {
-        saleAuction.withdrawBalance();
-    }
-
-    function setKittyLastPrice(uint256 _value, uint256 _kittyId) {
-        require(msg.sender == address(this) || msg.sender == address(saleAuction));
-        kitties[_kittyId].lastPrice = _value;
-    }
-}
-
 
 /// @title all functions related to creating kittens
-contract KittyMinting is KittyAuction {
+contract KittyMinting is KittyOwnership {
 
     // Limits the number of cats the contract owner can ever create.
-    uint256 public constant PROMO_CREATION_LIMIT = 5000;
     uint256 public constant GEN0_CREATION_LIMIT = 45000;
 
-    // Constants for gen0 auctions.
-    uint256 public constant GEN0_STARTING_PRICE = 10 finney;
-    uint256 public constant GEN0_AUCTION_DURATION = 1 days;
 
     // Counts the number of cats the contract owner has created.
-    uint256 public promoCreatedCount;
     uint256 public gen0CreatedCount = 0;
     /// @dev Creates a new gen0 kitty with the given genes and
     ///  creates an auction for it.
-    function createGen0Auction(string _name, string _author, uint256 _initialPrice) external onlyCLevel {
+    function createGen0Auction(string _name, string _artist, uint256 _initialPrice) external onlyCLevel {
         require(gen0CreatedCount < GEN0_CREATION_LIMIT);
         //
-        uint256 kittyId = _createKitty(_name, _author, _initialPrice, address(this));
-        _approve(kittyId, saleAuction);
-        saleAuction.createAuction(
-            kittyId,
-            _initialPrice,
-            _initialPrice,
-            GEN0_AUCTION_DURATION,
-            address(this)
-        );
+        uint256 kittyId = _createKitty(_name, _artist, _initialPrice, address(this));
     }
 
 }
@@ -1408,9 +806,6 @@ contract KittyCore is KittyMinting {
     /// @dev Reject all Ether from being sent here, unless it's from one of the
     ///  two auction contracts. (Hopefully, we can prevent user accidents.)
     function() external payable {
-        require(
-            msg.sender == address(saleAuction)
-        );
     }
 
     /// @notice Returns all the relevant information about a specific kitty.
@@ -1422,14 +817,14 @@ contract KittyCore is KittyMinting {
         uint256 birthTime,
         uint256 lastPrice,
         string name,
-        string author
+        string artist
     ) {
         Kitty storage kit = kitties[_id];
 
         // if this variable is 0 then it's not gestating
         birthTime = uint256(kit.birthTime);
         name = kit.name;
-        author = kit.author;
+        artist = kit.artist;
         lastPrice = kit.lastPrice;
     }
 
@@ -1439,7 +834,6 @@ contract KittyCore is KittyMinting {
     /// @notice This is public rather than external so we can call super.unpause
     ///  without using an expensive CALL.
     function unpause() public onlyCEO whenPaused {
-        require(saleAuction != address(0));
         require(newContractAddress == address(0));
 
         // Actually unpause the contract.
@@ -1452,60 +846,36 @@ contract KittyCore is KittyMinting {
     }
 
     function bid(uint256 _tokenId) external payable whenNotPaused {
-        uint256 doublePrice = mul(kitties[_tokenId].lastPrice, 2);
-        address seller = kittyIndexToApproved[_tokenId];
+        uint price = kitties[_tokenId].lastPrice;
+        uint256 minPrice = mul(price, 11);
+        minPrice = div(minPrice, 10);
+        uint256 doublePrice = mul(price, 2);
+        address seller = kittyIndexToOwner[_tokenId];
 
         // Value 2 more then last bought for
-        require(doublePrice < msg.value);
+        require(doublePrice >= msg.value);
+        require(minPrice <= msg.value);
         // Can't buy my own cat
         require(msg.sender != seller);
 
-        uint256 bidExcess = msg.value - doublePrice;
+        uint256 auctioneerCut = _computeCut(msg.value);
+        uint256 sellerProceeds = msg.value - auctioneerCut;
 
+        kitties[_tokenId].lastPrice = msg.value;
 
-        msg.sender.transfer(bidExcess);
-        uint256 auctioneerCut = _computeCut(doublePrice);
-        uint256 sellerProceeds = doublePrice - auctioneerCut;
-
-        seller.transfer(sellerProceeds);
+        if (seller != address(this)){
+            seller.transfer(sellerProceeds);
+        }
         _transfer(seller, msg.sender, _tokenId);
-    }
-
-    function bidReturn(uint256 _tokenId) external payable returns (address) {
-        //        uint256 doublePrice = mul(kitties[_tokenId].lastPrice,2);
-        //        uint256 doublePrice = kitties[_tokenId].lastPrice * 2;
-        address seller = kittyIndexToOwner[_tokenId];
-        //        // Value 2 more then last bought for
-        //        require(doublePrice < msg.value);
-        //        // Can't buy my own cat
-        require(msg.sender != seller);
-        //        kittyIndexToApproved[_tokenId] = msg.sender;
-        //        _transfer(seller, msg.sender, _tokenId);
-        kittyIndexToOwner[_tokenId] = msg.sender;
 
 
-        //        return msg.value;
-        return address(kittyIndexToOwner[_tokenId]);
-
-    }
-
-    function changeOwnership(uint256 _tokenId){
-        kittyIndexToOwner[_tokenId] = msg.sender;
     }
 
     function _computeCut(uint256 _price) internal view returns (uint256) {
-        // NOTE: We don't use SafeMath (or similar) in this function because
-        //  all of our entry functions carefully cap the maximum values for
-        //  currency (at 128-bits), and ownerCut <= 10000 (see the require()
-        //  statement in the ClockAuction constructor). The result of this
-        //  function is always guaranteed to be <= _price.
         return _price * 1000 / 10000;
     }
 }
 
-library Sale {
-
-}
 
 
 

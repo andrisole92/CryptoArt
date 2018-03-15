@@ -1,52 +1,64 @@
 import React from "react";
-import {Button, Col, Container, Form, FormGroup, Input, Label, Jumbotron} from "reactstrap";
+import bem from 'bem-cn';
+import {Button, Form} from "semantic-ui-react";
+import {connect} from "react-redux";
+
 import './SignIn.css';
 
+
 class SignIn extends React.Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            email: "",
+            fullName: ""
+        }
+    }
+
+    onSubmit(){
+        // Save in MongoDB
+    }
+
     render() {
+        const block = bem("SignIn");
+
         return (
-            <div>
-                <Jumbotron>
-                    <h1 className="display-3">Hello, world!</h1>
-                    <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
-                    <hr className="my-2" />
-                    <p>It uses utility classes for typgraphy and spacing to space content out within the larger container.</p>
-                    <p className="lead">
-                        <Button color="primary">Learn More</Button>
-                    </p>
-                </Jumbotron>
-                <Container>
-                    <Form>
-                        <FormGroup row>
-                            <Label for="address" sm={2}>Address</Label>
-                            <Col sm={10}>
-                                <Input type="email" name="address" id="address" placeholder="0x90AC9caeC5A8816FebDDc6e066881F94C34fca19"/>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="email" sm={2}>Email</Label>
-                            <Col sm={10}>
-                                <Input type="email" name="email" id="email" placeholder="E-mail"/>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="fullName" sm={2}>Name</Label>
-                            <Col sm={10}>
-                                <Input type="text" name="fullName" id="fullName"
-                                       placeholder="Full Name"/>
-                            </Col>
-                        </FormGroup>
-                    </Form>
-                    <FormGroup check row>
-                        <Col sm={{ size: 10, offset: 2 }}>
-                            <Button>Submit</Button>
-                        </Col>
-                    </FormGroup>
-                </Container>
+            <div className={block()}>
+                <Form>
+                    <Form.Field>
+                        <label>Address:</label>
+                        <input type="text" name="name" id="email" placeholder="" disabled={true} value={this.props.account.address}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>E-mail address:</label>
+                        <input type="email" name="email" id="email"
+                               placeholder="E-mail" value={this.state.email}
+                               onChange={(e) => this.setState({email: e.target.value})}/>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Full Name:</label>
+                        <input type="text" name="name" id="name"
+                               placeholder="Full Name" value={this.state.fullName}
+                               onChange={(e) => this.setState({fullName: e.target.value})}/>
+                    </Form.Field>
+                    <Button fluid primary onClick={() => this.onSubmit()}>Submit</Button>
+
+                </Form>
             </div>
 
         );
     }
 }
 
-export default SignIn;
+const mapStateToProps = state => ({
+    account: state.account
+});
+
+
+
+export default connect(
+    mapStateToProps,
+    null
+)(SignIn)
