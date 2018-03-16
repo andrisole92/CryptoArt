@@ -1,4 +1,4 @@
 export default {
-    serverUrl: "http://localhost:9090",
-    // serverUrl: "",
+    // serverUrl: "http://localhost:9090",
+    serverUrl: "",
 }
