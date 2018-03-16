@@ -3,11 +3,13 @@ export const SET_EMAIL = 'account/SET_EMAIL';
 export const SET_FULLNAME = 'account/SET_FULLNAME';
 export const SET_TOKENIDS = 'account/SET_TOKENIDS';
 export const SET_TOKENS = 'account/SET_TOKENS';
+export const SET_SIGNIN = 'account/SET_SIGNIN';
 
 const initialState = {
     address: "",
     email: "",
     fullName: "",
+    authenticated: false,
     tokens: null,
     tokenIds: null
 };
@@ -33,6 +35,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 tokens: action.tokens
+            };
+        case SET_SIGNIN:
+            return {
+                ...state,
+                authenticated: action.value
             };
 
         default:
@@ -64,7 +71,7 @@ export const setFullname = (fullName) => {
     return dispatch => {
         dispatch({
             type: SET_FULLNAME,
-            address: fullName
+            fullName: fullName
         })
 
     }
@@ -77,6 +84,15 @@ export const setTokens = (tokens) => {
             tokens: tokens
         })
 
+    }
+};
+
+export const setSignedIn = (value) => {
+    return dispatch => {
+        dispatch({
+            type: SET_SIGNIN,
+            value: value
+        })
     }
 };
 

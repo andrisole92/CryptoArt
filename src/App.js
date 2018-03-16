@@ -47,7 +47,7 @@ class App extends React.Component {
             window.web3 = new Web3(window.web3.currentProvider);
             this.web3Ready();
         } else {
-            this.setState({noWeb3:true})
+            this.setState({noWeb3: true});
             this.props.goTo('/dapp');
             // set the provider you want from Web3.providers
             // this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
@@ -56,18 +56,21 @@ class App extends React.Component {
         // this.props.goTo('/dapp');
 
 
-
-
     }
-    web3Ready(){
+
+    web3Ready() {
         window.web3.eth.getAccounts().then((accs) => {
-            window.web3.eth.defaultAccount = accs[0];
-            this.props.setAddress(accs[0]);
+            if (accs.length > 0) {
+                window.web3.eth.defaultAccount = accs[0];
+                this.props.setAddress(accs[0]);
+            }
+
 
         });
-        setInterval(function() {
+        setInterval(function () {
             window.web3.eth.getAccounts().then((accs) => {
-                if (window.web3.eth.defaultAccount !== accs[0]){
+                if (accs.length === 0) return;
+                if (window.web3.eth.defaultAccount !== accs[0]) {
                     window.location.reload();
                 }
             });
@@ -120,7 +123,7 @@ class App extends React.Component {
                         } else {
                             let totalPriceChange = (parseInt(p.endingPrice, 0) - parseInt(p.startingPrice, 0));
                             let currentPriceChange = totalPriceChange * ((unixTime - parseInt(p.startedAt, 0)) / p.duration);
-                            currentPrice = parseInt(currentPriceChange,0) + parseInt(p.startingPrice,0);
+                            currentPrice = parseInt(currentPriceChange, 0) + parseInt(p.startingPrice, 0);
                         }
                         r.currentPrice = currentPrice.toString();
                         r.seller = p.seller;
@@ -139,8 +142,11 @@ class App extends React.Component {
                 <Loader
                     loaded={(this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== null && this.props.auction.tokens !== null) || this.state.noWeb3}>
                     <Route exact path="/" component={Home}/>
+                    <Route exact path="/home" component={Home}/>
+                    <Route exact path="/marketplace" component={Home}/>
                     <Route exact path="/sign-in" component={SignIn}/>
                     <Route exact path="/my-cabinet" component={MyCabinet}/>
+                    <Route exact path="/my-gallery" component={MyCabinet}/>
                     <Route exact path="/owner/:address" component={GalleryOf}/>
                     <Route exact path="/admin" component={Admin}/>
                     <Route exact path="/faq" component={FAQ}/>

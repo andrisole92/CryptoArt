@@ -1,0 +1,7 @@
+.MyGallery {
+  display: block;
+  width: 80%;
+  margin: 24px auto; }
+  .MyGallery__name {
+    font-size: 18px;
+    font-weight: normal; }

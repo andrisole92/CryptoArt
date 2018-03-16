@@ -36,13 +36,15 @@ class MyGallery extends React.Component {
 
 
     render() {
+        const block = bem('MyGallery');
         let cards = this.state.tokens.map((a) => <MyCard key={a.tokenId} price={a.lastPrice} tokenId={a.tokenId}
                                                          name={a.name} owner={a.owner} img="/img/lisa.jpg"
                                                          artist={a.artist}/>);
-        const block = bem('MyGallery');
+
+        let name = this.props.account.fullName === "" ? this.props.account.address : this.props.account.fullName;
         return (
             <div className={block()}>
-                <p>My Gallery</p>
+                <h2>My Gallery <span className={block('name')()}>({name})</span></h2>
                 <Card.Group className="ui container center aligned" itemsPerRow={4} stackable={true} doubling={true}>
                     {cards}
                 </Card.Group>
