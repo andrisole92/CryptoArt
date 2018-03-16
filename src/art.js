@@ -30,7 +30,7 @@ const a = [
         description: ""
     },
     {
-        name: "The Great Wave off Kanagawa",
+        name: "Wave",
         img: "Hokusai-wave.jpg",
         description: ""
     },
