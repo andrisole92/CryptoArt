@@ -35,7 +35,7 @@ const a = [
         description: ""
     },
     {
-        name: "Portrait of Adele Bloch-Bauer I",
+        name: "Adele Bloch-Bauer I",
         img: "G-klimt.jpg",
         description: ""
     },

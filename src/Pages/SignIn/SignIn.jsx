@@ -50,7 +50,7 @@ class SignIn extends React.Component {
         let user = {address: this.props.account.address, email: this.state.email, fullName: this.state.fullName};
         axios.post(Globals.serverUrl + '/signup', user).then((r, e) => {
             let body = r.data;
-            if (!body.error) {
+            if (body.error) {
                 this.setState({error: "Sorry, an error has occured.", isLoading: false})
             } else {
                 this.onSignedIn(body.address, body.email, body.fullName);
