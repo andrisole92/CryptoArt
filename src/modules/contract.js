@@ -1,9 +1,9 @@
 export const SET_CORE = 'contract/SET_CORE'
-export const SET_SALE = 'contract/SET_SALE'
+export const SET_TRUFFLECORE = 'contract/SET_TRUFFLECORE'
 
 const initialState = {
     core: null,
-    sale: null
+    truffleCore: null
 }
 
 export default (state = initialState, action) => {
@@ -14,10 +14,10 @@ export default (state = initialState, action) => {
                 core: action.contract
             }
 
-        case SET_SALE:
+        case SET_TRUFFLECORE:
             return {
                 ...state,
-                sale: action.contract
+                truffleCore: action.contract
             }
 
         default:
@@ -36,11 +36,11 @@ export const setCore = (core) => {
 }
 
 
-export const setSale = (sale) => {
+export const setTruffleCore = (core) => {
     return dispatch => {
         dispatch({
-            type: SET_SALE,
-            contract: sale
+            type: SET_TRUFFLECORE,
+            contract: core
         })
     }
 }

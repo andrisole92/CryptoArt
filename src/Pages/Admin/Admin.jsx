@@ -1,8 +1,12 @@
 import React from "react";
 import {Button, Form, Header, Grid} from "semantic-ui-react";
-
-import './Admin.css'
+import utils from 'web3-utils'
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import bem from 'bem-cn';
+import {setLoading, setLoadingText, setMessage} from "../../modules/app";
+import './Admin.css'
+
 
 class Admin extends React.Component {
 
@@ -15,7 +19,6 @@ class Admin extends React.Component {
             price: "",
             paused: null,
             coreBalance: 0,
-            saleBalance: 0,
             totalSupply: 0
         }
     }
@@ -28,13 +31,11 @@ class Admin extends React.Component {
         console.log("checkContractsReady");
         if (window.core !== 'undefined' && window.core !== undefined && window.sale !== undefined && window.sale !== 'undefined') {
             let core = window.core;
-            let sale = window.sale;
             let web3 = window.web3;
             this.getPaused();
             this.getTotalSupply();
             this.getTotalSupply();
             web3.eth.getBalance(core.address).then((res) => this.setState({coreBalance: res}));
-            web3.eth.getBalance(sale.address).then((res) => this.setState({saleBalance: res}));
         } else {
             setTimeout(() => this.checkContractsReady(), 1000);
         }
@@ -45,18 +46,31 @@ class Admin extends React.Component {
     }
 
     createPainting() {
-        console.log('createPainting');
-        let web3 = window.web3;
-        console.log(this.props);
-        this.props.contract.core.methods.createGen0Auction(this.state.name, this.state.author, parseInt(web3.utils.toWei(this.state.price, "ether"), 10)).send({
-            from: web3.eth.defaultAccount,
-            gas: 400000,
-            gasPrice: 5000000000
-        }).then((res) => {
-            console.log(res);
-        }).catch((error) => {
-            console.log(error);
+        console.log('TEST');
+        this.props.core.deployed().then((i) => {
+            this.props.setLoading(true);
+            this.props.setLoadingText("Transaction in process. Please wait, and don't refresh the page. It may take up to 5 minutes.");
+            i.createGen0Auction(this.state.name, this.state.author, parseInt(utils.toWei(this.state.price, "ether"), 10), {
+                from: window.web3.eth.defaultAccount
+            }).then((r) => {
+                this.props.setMessage('You have just created something new.', 'YAY!', 'green');
+                this.props.setLoading(false);
+                this.props.setLoadingText("");
+            }).catch((e) => {
+                this.props.setMessage('Something went wrong.', 'Oops!', 'red');
+                this.props.setLoading(false);
+                this.props.setLoadingText("");
+            })
         })
+        // this.props.contract.core.methods.createGen0Auction(this.state.name, this.state.author, parseInt(web3.utils.toWei(this.state.price, "ether"), 10)).send({
+        //     from: web3.eth.defaultAccount,
+        //     gas: 400000,
+        //     gasPrice: 5000000000
+        // }).then((res) => {
+        //     console.log(res);
+        // }).catch((error) => {
+        //     console.log(error);
+        // })
     }
 
     onPause() {
@@ -89,39 +103,41 @@ class Admin extends React.Component {
     }
 
     render() {
+        const block = bem('Admin');
         return (
-            <div className="admin ui container aligned">
-                <Header >
-                    <Header.Content>
+            <div className={block()}>
+                <div className="admin ui container aligned">
+                    <Header>
+                        <Header.Content>
 
-                        <p>Total on Sale: {this.props.sale.total}</p>
-                        <p>Total Supply: {this.props.art.total}</p>
-                        {/*<Grid.Row>*/}
+                            <p>Total Supply: {this.props.art.total}</p>
+                            {/*<Grid.Row>*/}
                             {/*<Button onClick={() => this.onPause()}>{this.state.paused ? "Unpause" : "Pause"}</Button>*/}
-                        {/*</Grid.Row>*/}
-                    </Header.Content>
-                </Header>
-                <Form>
-                    <Form.Field>
-                        <label>Name</label>
-                        <input type="text" name="name" id="email" placeholder="Name" value={this.state.name}
-                               onChange={(e) => this.setState({name: e.target.value})}/>
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Artist</label>
-                        <input type="text" name="author" id="author"
-                               placeholder="Author" value={this.state.author}
-                               onChange={(e) => this.setState({author: e.target.value})}/>
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Price (in Ether)</label>
-                        <input type="text" name="price" id="price"
-                               placeholder="In Ethereum" value={this.state.price}
-                               onChange={(e) => this.setState({price: e.target.value})}/>
-                    </Form.Field>
-                    <Button fluid primary onClick={() => this.onSubmit()}>Submit</Button>
+                            {/*</Grid.Row>*/}
+                        </Header.Content>
+                    </Header>
+                    <Form>
+                        <Form.Field>
+                            <label>Name</label>
+                            <input type="text" name="name" id="email" placeholder="Name" value={this.state.name}
+                                   onChange={(e) => this.setState({name: e.target.value})}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Artist</label>
+                            <input type="text" name="author" id="author"
+                                   placeholder="Author" value={this.state.author}
+                                   onChange={(e) => this.setState({author: e.target.value})}/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Price (in Ether)</label>
+                            <input type="text" name="price" id="price"
+                                   placeholder="In Ethereum" value={this.state.price}
+                                   onChange={(e) => this.setState({price: e.target.value})}/>
+                        </Form.Field>
+                        <Button fluid primary onClick={() => this.onSubmit()}>Submit</Button>
 
-                </Form>
+                    </Form>
+                </div>
             </div>
         );
     }
@@ -129,17 +145,16 @@ class Admin extends React.Component {
 
 const mapStateToProps = state => ({
     contract: state.contract,
-    art: state.art,
-    sale: state.auction
+    core: state.contract.truffleCore,
+    art: state.art
 });
-// const mapDispatchToProps = dispatch => bindActionCreators({
-//     setSale,
-//     setCore,
-//     setTotal,
-//     setAuctionTotal
-// }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setLoading,
+    setLoadingText,
+    setMessage
+}, dispatch);
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Admin)

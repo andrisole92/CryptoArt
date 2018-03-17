@@ -8,7 +8,6 @@ import MyCabinet from "./Pages/MyGallery/MyGallery";
 import Header from "./Components/Header/Header";
 import Admin from "./Pages/Admin";
 import Contract from 'truffle-contract'
-import SaleClockAuctionContract from './contracts/SaleClockAuction.json'
 import CryptoArtContract from './contracts/KittyCore.json'
 import Web3 from 'web3';
 import {connect} from "react-redux";
@@ -16,7 +15,7 @@ import {push} from "react-router-redux";
 import {bindActionCreators} from "redux";
 
 
-import {setSale, setCore} from './modules/contract'
+import {setCore, setTruffleCore} from './modules/contract'
 import {addAuction, setAuctionTotal, setTokenArray} from './modules/auction'
 import {addArt, setTotal} from './modules/art'
 import Loader from "./Components/Loader/Loader";
@@ -25,6 +24,11 @@ import {setAddress} from "./modules/account";
 import BuyArt from "./Pages/BuyArt/BuyArt";
 import FAQ from "./Pages/FAQ/FAQ";
 import NeedWeb3 from "./Pages/NeedWeb3/NeedWeb3";
+import {setMessage} from "./modules/app";
+import {Message} from "semantic-ui-react";
+import bem from 'bem-cn';
+
+import './App.css'
 
 
 class App extends React.Component {
@@ -33,8 +37,6 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            saleLoaded: false,
-            coreLoaded: false,
             error: false,
             noWeb3: false
         }
@@ -76,71 +78,57 @@ class App extends React.Component {
             });
         }, 100);
         const CryptoArt = Contract(CryptoArtContract);
-        const SaleAuction = Contract(SaleClockAuctionContract);
         CryptoArt.setProvider(window.web3.currentProvider);
-        SaleAuction.setProvider(window.web3.currentProvider);
 
         CryptoArt.deployed().then((i) => {
             window.core = i;
             this.props.setCore(new window.web3.eth.Contract(CryptoArt.abi, i.address));
+            this.props.setTruffleCore(CryptoArt);
             this.setState({coreLoaded: true});
             i.totalSupply.call().then((r) => {
                 console.log(r);
                 this.props.setTotal(r.c[0]);
-            });
-            SaleAuction.deployed().then((s) => {
-                window.sale = s;
-                this.props.setSale(new window.web3.eth.Contract(SaleAuction.abi, s.address));
-                this.setState({saleLoaded: true});
-                i.tokensOfOwner(s.address).then((r) => {
-                    let arr = [];
-                    arr = r.map((t) => t.c[0]);
-                    this.props.setTokenArray(arr);
-                    this.props.setAuctionTotal(arr.length);
-                    this.bothContractsReady()
-                });
-
+                this.loadArt();
             });
         });
     }
 
-    bothContractsReady() {
+    loadArt() {
         for (let i = 1; i <= this.props.art.total; i++) {
-            if (this.props.art.allArt.find((e) => e.tokenId === i) !== undefined || this.props.auction.byPage.find((e) => e.tokenId === i) !== undefined) continue;
             this.props.contract.core.methods.getKitty(i).call({from: window.web3.eth.defaultAccount}).then((r) => {
                 r.tokenId = i;
-                if (this.props.auction.tokens.indexOf(i) === -1) {
-                    return this.props.contract.core.methods.ownerOf(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
-                        r.owner = p;
-                        this.props.addArt(r);
-                    });
-                } else {
-                    return this.props.contract.sale.methods.getAuction(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
-                        let unixTime = parseInt((new Date()).getTime() / 1000, 0);
-                        let currentPrice;
-                        if ((parseInt(p.duration, 0) + parseInt(p.startedAt, 0)) > Date.now()) {
-                            currentPrice = p.endingPrice;
-                        } else {
-                            let totalPriceChange = (parseInt(p.endingPrice, 0) - parseInt(p.startingPrice, 0));
-                            let currentPriceChange = totalPriceChange * ((unixTime - parseInt(p.startedAt, 0)) / p.duration);
-                            currentPrice = parseInt(currentPriceChange, 0) + parseInt(p.startingPrice, 0);
-                        }
-                        r.currentPrice = currentPrice.toString();
-                        r.seller = p.seller;
-                        this.props.addAuction(r)
-                    });
-                }
+                return this.props.contract.core.methods.ownerOf(i).call({from: window.web3.eth.defaultAccount}).then((p) => {
+                    r.owner = p;
+                    this.props.addArt(r);
+                });
             })
         }
     }
 
+    handleDismiss(){
+        this.props.setMessage("","",null);
+    }
+
 
     render() {
+
+        const block = bem("App");
+
+
+        let message = this.props.app.message === "" ? null : <Message
+            color={this.props.app.messageType}
+            className={block('message')()}
+            onDismiss={()=>this.handleDismiss()}
+            header={this.props.app.messageHeader}
+            content={this.props.app.message}
+        />;
+
         return (
             <div>
                 <Header></Header>
                 <Loader
-                    loaded={(this.state.saleLoaded && this.state.coreLoaded && this.props.art.total !== null && this.props.auction.tokens !== null) || this.state.noWeb3}>
+                    loaded={(this.state.coreLoaded && this.props.art.total !== null) || this.state.noWeb3}>
+                    {message}
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/home" component={Home}/>
                     <Route exact path="/marketplace" component={Home}/>
@@ -162,17 +150,18 @@ class App extends React.Component {
 const mapStateToProps = state => ({
     contract: state.contract,
     art: state.art,
-    auction: state.auction
+    app: state.app
 });
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setSale,
     setCore,
+    setTruffleCore,
     setTotal,
     setAuctionTotal,
     setTokenArray,
     setAddress,
     addAuction,
     addArt,
+    setMessage,
     goTo: (route) => push(route)
 }, dispatch);
 

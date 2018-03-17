@@ -1,10 +1,7 @@
 const KittyCore = artifacts.require("KittyCore");
-const SaleAuction = artifacts.require("SaleClockAuction");
 
 contract('KittyCore', function (accounts) {
     it("Should set CEO address", function () {
-        let coreBalance = web3.eth.getBalance(SaleAuction.address).toNumber();
-        console.log("core balance: " + coreBalance);
         return KittyCore.deployed().then(function (i) {
             return i.ceoAddress.call();
         }).then(function (a) {
@@ -24,7 +21,6 @@ contract('KittyCore', function (accounts) {
         }).then(function (a) {
             assert.equal(a, accounts[0], "10000 wasn't in the first account");
         }).catch(function () {
-            console.log(SaleAuction.address);
             console.log("We were expecting a Solidity throw (aka an invalid JUMP), we got one. Test succeeded.");
         });
     });
@@ -59,8 +55,6 @@ contract('KittyCore', function (accounts) {
             });
         });
         it("Create Promo Art", function () {
-            let coreBalance = web3.eth.getBalance(SaleAuction.address).toNumber();
-            console.log(", core balance: " + coreBalance);
             return KittyCore.deployed().then(function (i) {
                 return i.createGen0Auction("mohnatik", "Andre Ruz", 100)
             }).then(function (res) {
@@ -70,8 +64,6 @@ contract('KittyCore', function (accounts) {
             });
         });
         it("Promor Art Last Price is Equals to One that was Created after Created", function () {
-            let coreBalance = web3.eth.getBalance(SaleAuction.address).toNumber();
-            console.log(", core balance: " + coreBalance);
             core.getKitty(1).then((r) => {
                 console.log(r[1].c[0]);
                 assert.equal(r[1].c[0], 100, "Price Created equals Last Price");
@@ -92,8 +84,6 @@ contract('KittyCore', function (accounts) {
             });
         });
         it("I can't Buy Art if I bid is more than price*2", function () {
-            let coreBalance = web3.eth.getBalance(SaleAuction.address).toNumber();
-            console.log("core balance: " + coreBalance);
             return core.bid(1, {value: 30000000000}).then(function (a) {
                 console.log(a);
                 console.log("New Core Balance After: " + web3.eth.getBalance(core.address).toNumber());
@@ -104,8 +94,6 @@ contract('KittyCore', function (accounts) {
         });
 
         it("I can Buy Art if I bid is more lower price*2", function () {
-            let coreBalance = web3.eth.getBalance(SaleAuction.address).toNumber();
-            console.log("core balance: " + coreBalance);
             return core.bid(1, {value: 200}).then(function (a) {
                 assert.equal(a.receipt.status, 1, "Bid Successful");
             });

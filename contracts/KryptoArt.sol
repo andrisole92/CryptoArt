@@ -858,7 +858,9 @@ contract KittyCore is KittyMinting {
         // Can't buy my own cat
         require(msg.sender != seller);
 
-        uint256 auctioneerCut = _computeCut(msg.value);
+        uint256 diff = sub(msg.value,price);
+
+        uint256 auctioneerCut = _computeCut(diff);
         uint256 sellerProceeds = msg.value - auctioneerCut;
 
         kitties[_tokenId].lastPrice = msg.value;
