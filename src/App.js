@@ -15,7 +15,7 @@ import {push} from "react-router-redux";
 import {bindActionCreators} from "redux";
 
 
-import {setCore, setTruffleCore} from './modules/contract'
+import {setCore, setGasPrice, setTruffleCore} from './modules/contract'
 import {addAuction, setAuctionTotal, setTokenArray} from './modules/auction'
 import {addArt, setTotal} from './modules/art'
 import Loader from "./Components/Loader/Loader";
@@ -68,6 +68,9 @@ class App extends React.Component {
             }
 
 
+        });
+        window.web3.eth.getGasPrice().then((r) => {
+            this.props.setGasPrice(r);
         });
         setInterval(function () {
             window.web3.eth.getAccounts().then((accs) => {
@@ -155,6 +158,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     setCore,
     setTruffleCore,
+    setGasPrice,
     setTotal,
     setAuctionTotal,
     setTokenArray,

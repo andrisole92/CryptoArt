@@ -1,9 +1,11 @@
 export const SET_CORE = 'contract/SET_CORE'
 export const SET_TRUFFLECORE = 'contract/SET_TRUFFLECORE'
+export const SET_GASPRICE = 'contract/SET_GASPRICE'
 
 const initialState = {
     core: null,
-    truffleCore: null
+    truffleCore: null,
+    gasPrice: 0
 }
 
 export default (state = initialState, action) => {
@@ -18,6 +20,12 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 truffleCore: action.contract
+            }
+
+        case SET_GASPRICE:
+            return {
+                ...state,
+                gasPrice: action.gasPrice
             }
 
         default:
@@ -41,6 +49,16 @@ export const setTruffleCore = (core) => {
         dispatch({
             type: SET_TRUFFLECORE,
             contract: core
+        })
+    }
+}
+
+
+export const setGasPrice = (v) => {
+    return dispatch => {
+        dispatch({
+            type: SET_GASPRICE,
+            gasPrice: v
         })
     }
 }

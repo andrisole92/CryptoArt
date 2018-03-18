@@ -46,21 +46,26 @@ class Admin extends React.Component {
     }
 
     createPainting() {
-        console.log('TEST');
         this.props.core.deployed().then((i) => {
-            this.props.setLoading(true);
-            this.props.setLoadingText("Transaction in process. Please wait, and don't refresh the page. It may take up to 5 minutes.");
-            i.createGen0Auction(this.state.name, this.state.author, parseInt(utils.toWei(this.state.price, "ether"), 10), {
-                from: window.web3.eth.defaultAccount
-            }).then((r) => {
-                this.props.setMessage('You have just created something new.', 'YAY!', 'green');
-                this.props.setLoading(false);
-                this.props.setLoadingText("");
+            i.createGen0Auction.estimateGas(this.state.name, this.state.author, parseInt(utils.toWei(this.state.price, "ether"), 10)).then((price) => {
+                this.props.setLoading(true);
+                this.props.setLoadingText("Transaction in process. Please wait, and don't refresh the page. It may take up to 5 minutes.");
+                i.createGen0Auction(this.state.name, this.state.author, parseInt(utils.toWei(this.state.price, "ether"), 10), {
+                    from: window.web3.eth.defaultAccount,
+                    gas: parseInt(price)
+                }).then((r) => {
+                    this.props.setMessage('You have just created something new.', 'YAY!', 'green');
+                    this.props.setLoading(false);
+                    this.props.setLoadingText("");
+                }).catch((e) => {
+                    this.props.setMessage('Something went wrong.', 'Oops!', 'red');
+                    this.props.setLoading(false);
+                    this.props.setLoadingText("");
+                })
             }).catch((e) => {
                 this.props.setMessage('Something went wrong.', 'Oops!', 'red');
-                this.props.setLoading(false);
-                this.props.setLoadingText("");
             })
+
         })
         // this.props.contract.core.methods.createGen0Auction(this.state.name, this.state.author, parseInt(web3.utils.toWei(this.state.price, "ether"), 10)).send({
         //     from: web3.eth.defaultAccount,
@@ -119,22 +124,23 @@ class Admin extends React.Component {
                     <Form>
                         <Form.Field>
                             <label>Name</label>
-                            <input type="text" name="name" id="email" placeholder="Name" value={this.state.name}
+                            <input required type="text" name="name" id="email" placeholder="Name"
+                                   value={this.state.name}
                                    onChange={(e) => this.setState({name: e.target.value})}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Artist</label>
-                            <input type="text" name="author" id="author"
+                            <input required type="text" name="author" id="author"
                                    placeholder="Author" value={this.state.author}
                                    onChange={(e) => this.setState({author: e.target.value})}/>
                         </Form.Field>
                         <Form.Field>
                             <label>Price (in Ether)</label>
-                            <input type="text" name="price" id="price"
+                            <input required type="text" name="price" id="price"
                                    placeholder="In Ethereum" value={this.state.price}
                                    onChange={(e) => this.setState({price: e.target.value})}/>
                         </Form.Field>
-                        <Button fluid primary onClick={() => this.onSubmit()}>Submit</Button>
+                        <Button type="submit" fluid primary onClick={() => this.onSubmit()}>Submit</Button>
 
                     </Form>
                 </div>

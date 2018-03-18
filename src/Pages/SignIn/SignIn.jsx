@@ -76,6 +76,11 @@ class SignIn extends React.Component {
         return (
             <div className={block()}>
                 {error}
+                <Message
+                    className={block('warning')()}
+                    warning
+                    header='Please make sure you’re logged in to MetaMask!'
+                />
                 <Form>
                     <Form.Field>
                         <label>Address:</label>
