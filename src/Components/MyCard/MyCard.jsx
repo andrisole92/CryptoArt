@@ -49,7 +49,12 @@ class CardArt extends React.Component<Props, State> {
     render() {
         const block = bem('MyCard');
 
-        let img = "/img/"+art.find((e) => e.name === this.props.name).img;
+        let img = art.find((e) => e.name === this.props.name);
+        if (img){
+            img = "/img/"+img.img;
+        } else {
+            img = "";
+        }
         return (
                 <Card centered className={block()}>
                     <div className="imgContainer">

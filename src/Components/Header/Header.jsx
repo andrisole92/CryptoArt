@@ -50,7 +50,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     goTo: (route) => push(route),
     home: () => push('/'),
-    myCabinet: () => push('/my-gabinet'),
+    myCabinet: () => push('/my-gallery'),
     signIn: () => push('/sign-in'),
 }, dispatch);
 
