@@ -11,6 +11,8 @@ import './SignIn.css';
 import Globals from "../../Globals";
 import {bindActionCreators} from "redux";
 import {setEmail, setFullname, setSignedIn, setAddress} from "../../modules/account";
+import Cookies from 'cookies-js'
+
 
 class SignIn extends React.Component {
 
@@ -59,6 +61,7 @@ class SignIn extends React.Component {
     }
 
     onSignedIn(address, email, fullname) {
+        Cookies.set('account', JSON.stringify({address: address, email: email, fullName:fullname}), {expires: 6000});
         this.props.setAddress(address);
         this.props.setEmail(email);
         this.props.setFullname(fullname);

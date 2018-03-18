@@ -20,14 +20,14 @@ import {addAuction, setAuctionTotal, setTokenArray} from './modules/auction'
 import {addArt, setTotal} from './modules/art'
 import Loader from "./Components/Loader/Loader";
 import GalleryOf from "./Pages/GalleryOf/GalleryOf";
-import {setAddress} from "./modules/account";
+import {setAddress,setSignedIn,setFullname,setEmail} from "./modules/account";
 import BuyArt from "./Pages/BuyArt/BuyArt";
 import FAQ from "./Pages/FAQ/FAQ";
 import NeedWeb3 from "./Pages/NeedWeb3/NeedWeb3";
 import {setMessage} from "./modules/app";
 import {Message} from "semantic-ui-react";
 import bem from 'bem-cn';
-
+import Cookies from 'cookies-js'
 import './App.css'
 
 
@@ -61,10 +61,23 @@ class App extends React.Component {
     }
 
     web3Ready() {
+
         window.web3.eth.getAccounts().then((accs) => {
             if (accs.length > 0) {
                 window.web3.eth.defaultAccount = accs[0];
                 this.props.setAddress(accs[0]);
+                let accountCookie = Cookies.get('account');
+                if (accountCookie){
+                    //cookie is present
+                    let account = JSON.parse(accountCookie);
+                    console.log('account');
+                    if (account.address === accs[0]){
+                        this.props.setFullname(account.fullName);
+                        this.props.setEmail(account.email);
+                        this.props.setSignedIn(true);
+                    }
+                }
+
             }
 
 
@@ -108,8 +121,8 @@ class App extends React.Component {
         }
     }
 
-    handleDismiss(){
-        this.props.setMessage("","",null);
+    handleDismiss() {
+        this.props.setMessage("", "", null);
     }
 
 
@@ -121,7 +134,7 @@ class App extends React.Component {
         let message = this.props.app.message === "" ? null : <Message
             color={this.props.app.messageType}
             className={block('message')()}
-            onDismiss={()=>this.handleDismiss()}
+            onDismiss={() => this.handleDismiss()}
             header={this.props.app.messageHeader}
             content={this.props.app.message}
         />;
@@ -163,6 +176,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setAuctionTotal,
     setTokenArray,
     setAddress,
+    setEmail,
+    setFullname,
+    setSignedIn,
     addAuction,
     addArt,
     setMessage,
