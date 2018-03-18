@@ -50,10 +50,6 @@ class CardArt extends React.Component<Props, State> {
         const block = bem('MyCard');
 
         let img = "/img/"+art.find((e) => e.name === this.props.name).img;
-
-        let actionText = this.props.isAuction ? "Cancel Auction" : "Create Auction";
-        let action = this.props.isAuction ? () => this.onCancelAuction() : () => this.onOpenForm();
-
         return (
                 <Card centered className={block()}>
                     <div className="imgContainer">

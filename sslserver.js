@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(require('helmet')());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-// app.use(allowCrossDomain);
+app.use(allowCrossDomain);
 
 
 //Force https
