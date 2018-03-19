@@ -5,16 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3193ee35-5127-4f73-a24e-90dec98b96b3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/static/js/main.fb5efa62.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/static/js/main.fb5efa62.js.map" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/static/js/main.e4b5f044.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/static/js/main.e4b5f044.js.map" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/static/js/main.a46ac76a.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/static/js/main.a46ac76a.js.map" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/build/static/js/main.fb5efa62.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/build/static/js/main.fb5efa62.js.map" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/asset-manifest.json" afterPath="$PROJECT_DIR$/build/asset-manifest.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/index.html" afterPath="$PROJECT_DIR$/build/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/service-worker.js" afterPath="$PROJECT_DIR$/build/service-worker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Components/Header/Header.jsx" afterPath="$PROJECT_DIR$/src/Components/Header/Header.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Components/MyCard/MyCard.jsx" afterPath="$PROJECT_DIR$/src/Components/MyCard/MyCard.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/ERC721.json" afterPath="$PROJECT_DIR$/src/contracts/ERC721.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/ERC721Metadata.json" afterPath="$PROJECT_DIR$/src/contracts/ERC721Metadata.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyAccessControl.json" afterPath="$PROJECT_DIR$/src/contracts/KittyAccessControl.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyBase.json" afterPath="$PROJECT_DIR$/src/contracts/KittyBase.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyCore.json" afterPath="$PROJECT_DIR$/src/contracts/KittyCore.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyMinting.json" afterPath="$PROJECT_DIR$/src/contracts/KittyMinting.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyOwnership.json" afterPath="$PROJECT_DIR$/src/contracts/KittyOwnership.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/Migrations.json" afterPath="$PROJECT_DIR$/src/contracts/Migrations.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/Ownable.json" afterPath="$PROJECT_DIR$/src/contracts/Ownable.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/Pausable.json" afterPath="$PROJECT_DIR$/src/contracts/Pausable.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/SafeMath.json" afterPath="$PROJECT_DIR$/src/contracts/SafeMath.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -288,6 +297,11 @@
               <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
               <item name="untitled1" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="untitled1" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -304,19 +318,19 @@
     <property name="nodejs.jest.jest_package" value="$PROJECT_DIR$/node_modules/react-scripts" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public/img" />
-      <recent name="$PROJECT_DIR$/bin" />
-      <recent name="$PROJECT_DIR$/public" />
-      <recent name="$PROJECT_DIR$/build" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/public/img" />
       <recent name="$PROJECT_DIR$/src/Components" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/img" />
+      <recent name="$PROJECT_DIR$/bin" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/build" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -408,7 +422,7 @@
       <workItem from="1521054216821" duration="32454000" />
       <workItem from="1521387749805" duration="2490000" />
       <workItem from="1521400624894" duration="8000" />
-      <workItem from="1521403305688" duration="2714000" />
+      <workItem from="1521403305688" duration="3618000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <created>1520368891373</created>
@@ -739,7 +753,14 @@
       <option name="project" value="LOCAL" />
       <updated>1521408395292</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="new server">
+      <created>1521408833357</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1521408833357</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -748,7 +769,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138787000" />
+    <option name="totallyTimeSpent" value="139691000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="168" y="62" width="1402" height="870" extended-state="0" />

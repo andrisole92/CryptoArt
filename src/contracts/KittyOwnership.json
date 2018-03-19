@@ -7466,9 +7466,9 @@
       {
         "attributes": {
           "contractDependencies": [
-            279,
             427,
             110,
+            279,
             1544
           ],
           "contractKind": "contract",
@@ -14384,6 +14384,15 @@
                     "attributes": {
                       "externalReferences": [
                         {
+                          "outputString": {
+                            "declaration": 965,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "25910:12:0",
+                            "valueSize": 1
+                          }
+                        },
+                        {
                           "outputPtr": {
                             "declaration": 972,
                             "isOffset": false,
@@ -14407,15 +14416,6 @@
                             "isOffset": false,
                             "isSlot": false,
                             "src": "25940:8:0",
-                            "valueSize": 1
-                          }
-                        },
-                        {
-                          "outputString": {
-                            "declaration": 965,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "25910:12:0",
                             "valueSize": 1
                           }
                         }
@@ -15993,10 +15993,10 @@
       {
         "attributes": {
           "contractDependencies": [
-            279,
             427,
-            110,
             1030,
+            110,
+            279,
             1544
           ],
           "contractKind": "contract",
@@ -16554,10 +16554,10 @@
       {
         "attributes": {
           "contractDependencies": [
-            279,
             427,
-            110,
             1030,
+            110,
+            279,
             1133,
             1544
           ],
@@ -20226,5 +20226,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-17T16:39:48.697Z"
+  "updatedAt": "2018-03-19T12:04:57.038Z"
 }
