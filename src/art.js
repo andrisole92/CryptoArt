@@ -10,11 +10,6 @@ const a = [
         description: ""
     },
     {
-        name: "a bar at the folies bergere",
-        img: "a-bar-at-the-folies-bergere.jpg",
-        description: ""
-    },
-    {
         name: "Sunflowers",
         img: "sunflowers.jpg",
         description: ""
@@ -30,29 +25,44 @@ const a = [
         description: ""
     },
     {
-        name: "Wave",
+        name: "The Great Wave off Kanagawa",
         img: "Hokusai-wave.jpg",
         description: ""
     },
     {
-        name: "Adele Bloch-Bauer I",
+        name: "Adele Bloch-Bauer I ",
         img: "G-klimt.jpg",
         description: ""
     },
     {
-        name: "",
-        description: "",
-        img: ""
+        name: "A Bar at the Folies-Bergère",
+        img: "a-bar-at-the-folies-bergere.jpg",
+        description: ""
+    },
+    {
+        name: "The Kiss",
+        img: "the-kiss.jpg",
+        description: ""
+    },
+    {
+        name: "The Birth of Venus",
+        img: "birth-of-venus.jpg",
+        description: ""
+    },
+    {
+        name: "The Statue of David",
+        img: "david.jpg",
+        description: ""
+    },
+    {
+        name: "The Night Watch",
+        img: "The_Nightwatch_by_Rembrandt.jpg",
+        description: ""
     },
     {
         name: "",
-        description: "",
-        img: ""
-    },
-    {
-        name: "",
-        description: "",
-        img: ""
+        img: "",
+        description: ""
     },
 ];
 

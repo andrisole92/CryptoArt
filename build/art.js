@@ -1,52 +1,62 @@
 const a = [
     {
         name: "Starry Night",
-        description: "starry-night.jpg",
-        img: ""
+        img: "starry-night.jpg",
+        description: ""
     },
     {
         name: "Mona Lisa",
-        description: "mona.jpg",
-        img: ""
+        img: "mona.jpg",
+        description: ""
     },
     {
-        name: "a bar at the folies bergere",
+        name: "Sunflowers",
+        img: "sunflowers.jpg",
+        description: ""
+    },
+    {
+        name: "Girl with a Pearl Earring",
+        img: "girl-with-a-pearl.jpg",
+        description: ""
+    },
+    {
+        name: "The Fighting Temeraire",
+        img: "turner-Fighting Temeraire copy.jpg",
+        description: ""
+    },
+    {
+        name: "The Great Wave off Kanagawa",
+        img: "Hokusai-wave.jpg",
+        description: ""
+    },
+    {
+        name: "Adele Bloch-Bauer I",
+        img: "G-klimt.jpg",
+        description: ""
+    },
+    {
+        name: "A Bar at the Folies-Bergère",
         description: "a-bar-at-the-folies-bergere.jpg",
         img: ""
     },
     {
-        name: "Sunflowers",
-        description: "sunflowers.jpg",
+        name: "The Kiss",
+        description: "the-kiss.jpg",
         img: ""
     },
     {
-        name: "Girl with a Pearl Earring",
-        description: "girl-with-a-pearl.jpg",
+        name: "The Birth of Venus",
+        description: "birth-of-venus.jpg",
         img: ""
     },
     {
-        name: "The Fighting Temeraire",
-        description: "turner-Fighting Temeraire copy.jpg",
+        name: "The Statue of David",
+        description: "david.jpg",
         img: ""
     },
     {
-        name: "The Great Wave off Kanagawa",
-        description: "Hokusai-wave.jpg",
-        img: ""
-    },
-    {
-        name: "Portrait of Adele Bloch-Bauer I",
-        description: "G-klimt.jpg",
-        img: ""
-    },
-    {
-        name: "",
-        description: "",
-        img: ""
-    },
-    {
-        name: "",
-        description: "",
+        name: "The Night Watch",
+        description: "The_Nightwatch_by_Rembrandt.jpg",
         img: ""
     },
     {
