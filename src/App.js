@@ -95,7 +95,7 @@ class App extends React.Component {
         }, 100);
         const CryptoArt = Contract(CryptoArtContract);
         CryptoArt.setProvider(window.web3.currentProvider);
-
+        window.cc = CryptoArt;
         CryptoArt.deployed().then((i) => {
             window.core = i;
             this.props.setCore(new window.web3.eth.Contract(CryptoArt.abi, i.address));
