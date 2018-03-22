@@ -15,7 +15,7 @@ const a = [
         description: ""
     },
     {
-        name: "Girl with a Pearl Earring",
+        name: "The Girl with a Pearl Earring",
         img: "girl-with-a-pearl.jpg",
         description: ""
     },
@@ -30,7 +30,7 @@ const a = [
         description: ""
     },
     {
-        name: "Adele Bloch-Bauer I ",
+        name: "Adele Bloch-Bauer I",
         img: "G-klimt.jpg",
         description: ""
     },
