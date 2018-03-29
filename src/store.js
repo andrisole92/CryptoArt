@@ -5,12 +5,12 @@ import createHistory from 'history/createBrowserHistory'
 import rootReducer from './modules'
 import ReactGa from 'react-ga';
 
-ReactGa.initialize('UA-116432494-1');
+// ReactGa.initialize('UA-116432494-1');
 
 export const history = createHistory();
-history.listen(()=>{
-    ReactGa.pageview(window.location.href);
-});
+// history.listen(()=>{
+//     ReactGa.pageview(window.location.href);
+// });
 
 const initialState = {};
 const enhancers = [];
