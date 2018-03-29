@@ -6,6 +6,7 @@ import rootReducer from './modules'
 import ReactGa from 'react-ga';
 
 ReactGa.initialize('UA-116432494-1');
+ReactGa.pageview(window.location.href);
 
 export const history = createHistory();
 history.listen(()=>{
