@@ -3,8 +3,20 @@ import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import createHistory from 'history/createBrowserHistory'
 import rootReducer from './modules'
+import ReactGA from "react-ga";
+
+ReactGA.initialize('UA-116432494-1');
+//Firts page, then listen
+
+ReactGA.pageview(window.location.href);
 
 export const history = createHistory();
+
+
+//Google Analytics
+history.listen((location, action) => {
+    ReactGA.pageview(window.location.href);
+});
 
 const initialState = {};
 const enhancers = [];

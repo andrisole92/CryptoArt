@@ -1,5 +1,3 @@
-import {SET_EMAIL} from "./account";
-
 export const ADD_ART = 'art/ADD';
 export const REMOVE_ART = 'art/REMOVE';
 export const SET_TOTAL = 'art/SET_TOTAL';

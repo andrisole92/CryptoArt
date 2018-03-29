@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Form, Header, Grid} from "semantic-ui-react";
+import {Button, Form, Header} from "semantic-ui-react";
 import utils from 'web3-utils'
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";

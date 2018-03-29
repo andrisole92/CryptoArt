@@ -20,7 +20,7 @@ import {addAuction, setAuctionTotal, setTokenArray} from './modules/auction'
 import {addArt, setTotal} from './modules/art'
 import Loader from "./Components/Loader/Loader";
 import GalleryOf from "./Pages/GalleryOf/GalleryOf";
-import {setAddress,setSignedIn,setFullname,setEmail} from "./modules/account";
+import {setAddress, setSignedIn, setFullname, setEmail} from "./modules/account";
 import BuyArt from "./Pages/BuyArt/BuyArt";
 import FAQ from "./Pages/FAQ/FAQ";
 import NeedWeb3 from "./Pages/NeedWeb3/NeedWeb3";
@@ -43,6 +43,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+
         console.log('componentDidMount3');
         if (typeof window.web3 !== 'undefined') {
             this.web3Provider = window.web3.currentProvider;
@@ -67,11 +68,11 @@ class App extends React.Component {
                 window.web3.eth.defaultAccount = accs[0];
                 this.props.setAddress(accs[0]);
                 let accountCookie = Cookies.get('account');
-                if (accountCookie){
+                if (accountCookie) {
                     //cookie is present
                     let account = JSON.parse(accountCookie);
                     console.log('account');
-                    if (account.address === accs[0]){
+                    if (account.address === accs[0]) {
                         this.props.setFullname(account.fullName);
                         this.props.setEmail(account.email);
                         this.props.setSignedIn(true);
@@ -125,6 +126,9 @@ class App extends React.Component {
         this.props.setMessage("", "", null);
     }
 
+    fireTracking() {
+        console.log('fireTracking');
+    }
 
     render() {
 
@@ -141,6 +145,7 @@ class App extends React.Component {
 
         return (
             <div>
+
                 <Header></Header>
                 <Loader
                     loaded={(this.state.coreLoaded && this.props.art.total !== null) || this.state.noWeb3}>

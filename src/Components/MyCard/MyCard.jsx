@@ -1,6 +1,6 @@
 import React from "react";
 import {push} from 'react-router-redux'
-import {Button, Card, Image} from "semantic-ui-react";
+import { Card, Image} from "semantic-ui-react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import utils from 'web3-utils'
@@ -9,7 +9,6 @@ import bem from 'bem-cn';
 
 import './MyCard.css'
 import art from '../../art'
-import SellerForm from "../SellerForm/SellerForm";
 
 class CardArt extends React.Component<Props, State> {
 
@@ -23,12 +22,6 @@ class CardArt extends React.Component<Props, State> {
 
     }
 
-    componentDidMount() {
-        // this.props.core.methods.ownerOf(this.props.tokenId).call({from: window.web3.eth.defaultAccount}).then((res)=>{
-        //     return this.setState((p) => {return {owner: res}});
-        // });
-
-    }
 
     onSell(o) {
         this.props.core.methods.createSaleAuction(parseInt(this.props.tokenId),utils.toWei(o.startPrice),utils.toWei(o.endPrice),parseInt(o.days * 3600)).send({from: window.web3.eth.defaultAccount}).then((r)=>{
@@ -60,7 +53,6 @@ class CardArt extends React.Component<Props, State> {
                     <div className="imgContainer">
                         <Image className="testImage" src={img}/>
                     </div>
-                    <SellerForm className={block('sellContainer')()} isActive={this.state.sellPressed} onSell={(o)=>this.onSell(o)} onCancel={()=>this.setState({sellPressed:false})}/>
                     <Card.Content>
                         <Card.Header>
                             {this.props.name}

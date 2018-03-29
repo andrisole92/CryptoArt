@@ -7,7 +7,6 @@ import './MyGallery.css'
 import {setTokens} from "../../modules/account";
 import {bindActionCreators} from "redux";
 import {Card} from 'semantic-ui-react'
-import CardArt from "../../Components/CardArt/CardArt";
 import MyCard from "../../Components/MyCard/MyCard";
 
 
