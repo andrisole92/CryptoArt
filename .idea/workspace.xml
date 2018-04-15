@@ -6,35 +6,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3193ee35-5127-4f73-a24e-90dec98b96b3" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/static/js/main.f8856dde.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/static/js/main.f8856dde.js.map" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/static/js/main.1f0e8b5f.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/static/js/main.1f0e8b5f.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/asset-manifest.json" afterPath="$PROJECT_DIR$/build/asset-manifest.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/index.html" afterPath="$PROJECT_DIR$/build/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/service-worker.js" afterPath="$PROJECT_DIR$/build/service-worker.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/ERC721.json" afterPath="$PROJECT_DIR$/live/contracts/ERC721.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/ERC721Metadata.json" afterPath="$PROJECT_DIR$/live/contracts/ERC721Metadata.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/KittyAccessControl.json" afterPath="$PROJECT_DIR$/live/contracts/KittyAccessControl.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/KittyBase.json" afterPath="$PROJECT_DIR$/live/contracts/KittyBase.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/KittyCore.json" afterPath="$PROJECT_DIR$/live/contracts/KittyCore.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/KittyMinting.json" afterPath="$PROJECT_DIR$/live/contracts/KittyMinting.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/KittyOwnership.json" afterPath="$PROJECT_DIR$/live/contracts/KittyOwnership.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/Migrations.json" afterPath="$PROJECT_DIR$/live/contracts/Migrations.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/Ownable.json" afterPath="$PROJECT_DIR$/live/contracts/Ownable.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/Pausable.json" afterPath="$PROJECT_DIR$/live/contracts/Pausable.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/live/contracts/SafeMath.json" afterPath="$PROJECT_DIR$/live/contracts/SafeMath.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/ERC721.json" afterPath="$PROJECT_DIR$/src/contracts/ERC721.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/ERC721Metadata.json" afterPath="$PROJECT_DIR$/src/contracts/ERC721Metadata.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyAccessControl.json" afterPath="$PROJECT_DIR$/src/contracts/KittyAccessControl.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyBase.json" afterPath="$PROJECT_DIR$/src/contracts/KittyBase.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyCore.json" afterPath="$PROJECT_DIR$/src/contracts/KittyCore.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyMinting.json" afterPath="$PROJECT_DIR$/src/contracts/KittyMinting.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/KittyOwnership.json" afterPath="$PROJECT_DIR$/src/contracts/KittyOwnership.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/Migrations.json" afterPath="$PROJECT_DIR$/src/contracts/Migrations.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/Ownable.json" afterPath="$PROJECT_DIR$/src/contracts/Ownable.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/Pausable.json" afterPath="$PROJECT_DIR$/src/contracts/Pausable.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/contracts/SafeMath.json" afterPath="$PROJECT_DIR$/src/contracts/SafeMath.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/truffle.js" afterPath="$PROJECT_DIR$/truffle.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -68,11 +43,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CryptoArtTest.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CryptoArtTest.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/CryptoArtTest.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-615">
               <caret line="27" column="38" lean-forward="false" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -88,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="truffle.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="truffle.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/truffle.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="24" lean-forward="false" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+            <state relative-caret-position="195">
+              <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -140,16 +125,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -161,7 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>props.</find>
       <find>author</find>
       <find>Mohn</find>
       <find>bid</find>
@@ -191,6 +165,7 @@
       <find>&gt;7</find>
       <find>SellerForm</find>
       <find>state</find>
+      <find>setC</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -239,7 +214,6 @@
         <option value="$PROJECT_DIR$/public/art.js" />
         <option value="$PROJECT_DIR$/src/Globals.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/art.js" />
         <option value="$PROJECT_DIR$/src/Components/CardArt/Card.scss" />
         <option value="$USER_HOME$/Downloads/Lucky8Kenov1.11_OpenBet/index.html" />
@@ -254,6 +228,7 @@
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/truffle.js" />
         <option value="$PROJECT_DIR$/src/Pages/Home/Home.jsx" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -310,6 +285,27 @@
               <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
               <item name="untitled1" type="462c0819:PsiDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="untitled1" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="untitled1" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="untitled1" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="main.1f0e8b5f.js" type="620a8d5e:NestingTreeNode" />
             </path>
             <path>
               <item name="untitled1" type="b2602c69:ProjectViewProjectNode" />
@@ -457,14 +453,7 @@
       <workItem from="1523633680463" duration="71000" />
       <workItem from="1523732065216" duration="575000" />
       <workItem from="1523734266420" duration="125000" />
-      <workItem from="1523799804202" duration="850000" />
-    </task>
-    <task id="LOCAL-00011" summary="Server">
-      <created>1520433668153</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1520433668153</updated>
+      <workItem from="1523799804202" duration="1194000" />
     </task>
     <task id="LOCAL-00012" summary="Server">
       <created>1520433809594</created>
@@ -802,7 +791,14 @@
       <option name="project" value="LOCAL" />
       <updated>1522327322050</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="new build">
+      <created>1523800764757</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1523800764758</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -811,7 +807,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="162976000" />
+    <option name="totallyTimeSpent" value="163320000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="977" extended-state="6" />
@@ -1021,13 +1017,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="9" lean-forward="false" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Components/CardArt/Card.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1152,14 +1141,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/truffle.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="24" lean-forward="false" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1214,6 +1195,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-615">
           <caret line="27" column="38" lean-forward="false" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/truffle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="22" lean-forward="true" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
           <folding />
         </state>
       </provider>

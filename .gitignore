@@ -9,6 +9,7 @@
 
 # misc
 .truffle-config.js
+.truffle.js
 .DS_Store
 .env.local
 .env.development.local
