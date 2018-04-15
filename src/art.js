@@ -60,6 +60,26 @@ const a = [
         description: ""
     },
     {
+        name: "Fold",
+        img: "fold2014.jpg",
+        description: ""
+    },
+    {
+        name: "Slider",
+        img: "slider.jpg",
+        description: ""
+    },
+    {
+        name: "Hollow",
+        img: "Hollow.jpg",
+        description: ""
+    },
+    {
+        name: "Hunter",
+        img: "hunter.jpg",
+        description: ""
+    },
+    {
         name: "",
         img: "",
         description: ""
